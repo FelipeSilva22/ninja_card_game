@@ -1,0 +1,182 @@
+[
+    {
+        "tipo": "Tool",
+        "idCard": "T001",
+        "estagio": 1,
+        "nome": "Pilula de chakra",
+        "efeito": "chakra:20;hp:-10",
+        "descricao": "Pilula de chakra",
+        "imagem": "imagens/tool.png"
+    },
+    {
+        "tipo": "Tool",
+        "idCard": "T002",
+        "estagio": "",
+        "nome": "Pilula de chakra",
+        "efeito": "chakra:20;hp:-10",
+        "descricao": "Pilula de chakra",
+        "imagem": "imagens/tool.png"
+    },
+    {
+        "tipo": "Tool",
+        "idCard": "T003",
+        "estagio": "",
+        "nome": "Pilula de cura",
+        "efeito": "hp:20,velocidade:-10",
+        "descricao": "Pilula de cura",
+        "imagem": "imagens/tool.png"
+    },
+    {
+        "tipo": "Tool",
+        "idCard": "T004",
+        "estagio": "",
+        "nome": "Pilula de cura",
+        "efeito": "hp:20,velocidade:-10",
+        "descricao": "Pilula de cura",
+        "imagem": "imagens/tool.png"
+    },
+    {
+        "tipo": "Tool",
+        "idCard": "T005",
+        "estagio": "",
+        "nome": "Pilula de cura",
+        "efeito": "hp:20,velocidade:-10",
+        "descricao": "Pilula de cura",
+        "imagem": "imagens/tool.png"
+    },
+    {
+        "tipo": "Tool",
+        "idCard": "T006",
+        "estagio": "",
+        "nome": "Bomba de fumaça",
+        "efeito": "velocidade:10",
+        "descricao": "Pergaminho de invocação",
+        "imagem": "imagens/tool.png"
+    },
+    {
+        "tipo": "Tool",
+        "idCard": "T007",
+        "estagio": 1,
+        "nome": "Bomba de fumaça",
+        "efeito": "velocidade:10",
+        "descricao": "Pergaminho de invocação",
+        "imagem": "imagens/tool.png"
+    },
+    {
+        "tipo": "Tool",
+        "idCard": "T008",
+        "estagio": "",
+        "nome": "Bomba de fumaça",
+        "efeito": "velocidade:10",
+        "descricao": "Pergaminho de invocação",
+        "imagem": "imagens/tool.png"
+    },
+    {
+        "tipo": "Tool",
+        "idCard": "T009",
+        "estagio": "",
+        "nome": "Bomba de fumaça",
+        "efeito": "velocidade:10",
+        "descricao": "Pergaminho de invocação",
+        "imagem": "imagens/tool.png"
+    },
+    {
+        "tipo": "Tool",
+        "idCard": "T010",
+        "estagio": "",
+        "nome": "Bomba de fumaça",
+        "efeito": "velocidade:10",
+        "descricao": "Pergaminho de invocação",
+        "imagem": "imagens/tool.png"
+    },
+    {
+        "tipo": "Tool",
+        "idCard": "T011",
+        "estagio": "",
+        "nome": "Kunai",
+        "efeito": "taijutsu:15",
+        "descricao": "Kunai que aumenta ataque",
+        "imagem": "imagens/tool.png"
+    },
+    {
+        "tipo": "Tool",
+        "idCard": "T012",
+        "estagio": "",
+        "nome": "Kunai",
+        "efeito": "taijutsu:15",
+        "descricao": "Kunai que aumenta ataque",
+        "imagem": "imagens/tool.png"
+    },
+    {
+        "tipo": "Tool",
+        "idCard": "T013",
+        "estagio": "",
+        "nome": "Kunai",
+        "efeito": "taijutsu:15",
+        "descricao": "Kunai que aumenta ataque",
+        "imagem": "imagens/tool.png"
+    },
+    {
+        "tipo": "Tool",
+        "idCard": "T014",
+        "estagio": "",
+        "nome": "Kunai",
+        "efeito": "taijutsu:15",
+        "descricao": "Kunai que aumenta ataque",
+        "imagem": "imagens/tool.png"
+    },
+    {
+        "tipo": "Tool",
+        "idCard": "T015",
+        "estagio": "",
+        "nome": "Kunai",
+        "efeito": "taijutsu:15",
+        "descricao": "Kunai que aumenta ataque",
+        "imagem": "imagens/tool.png"
+    },
+    {
+        "tipo": "Tool",
+        "idCard": "T016",
+        "estagio": "",
+        "nome": "Colete",
+        "efeito": "defesa:20;genjutsu:10;velocidade:-10",
+        "descricao": "Leque que aumenta defesa",
+        "imagem": "imagens/tool.png"
+    },
+    {
+        "tipo": "Tool",
+        "idCard": "T017",
+        "estagio": "",
+        "nome": "Colete",
+        "efeito": "defesa:20;genjutsu:10;velocidade:-10",
+        "descricao": "Leque que aumenta defesa",
+        "imagem": "imagens/tool.png"
+    },
+    {
+        "tipo": "Tool",
+        "idCard": "T018",
+        "estagio": "",
+        "nome": "Concentração defensiva",
+        "efeito": "defesa:15;genjutsu:20;velocidade:-5",
+        "descricao": "Leque que aumenta defesa",
+        "imagem": "imagens/tool.png"
+    },
+    {
+        "tipo": "Tool",
+        "idCard": "T019",
+        "estagio": "",
+        "nome": "Concentração defensiva",
+        "efeito": "defesa:15;genjutsu:20;velocidade:-5",
+        "descricao": "Leque que aumenta defesa",
+        "imagem": "imagens/tool.png"
+    },
+    {
+        "tipo": "Tool",
+        "idCard": "T020",
+        "estagio": "",
+        "nome": "Concentração defensiva",
+        "efeito": "defesa:15;genjutsu:20;velocidade:-5",
+        "descricao": "Leque que aumenta defesa",
+        "imagem": "imagens/tool.png"
+    }
+]

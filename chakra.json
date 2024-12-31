@@ -1,0 +1,802 @@
+[
+    {
+        "tipo": "Chakra",
+        "idCard": "CF01",
+        "naturezaChakra": "chakraFogo;chakraTerra",
+        "efeito": "chakraFogo:+1;chakraTerra:+1",
+        "descricao": "Fornece 1 energia de fogo e 1 terra",
+        "imagem": "imagens/katon.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CF02",
+        "naturezaChakra": "chakraFogo",
+        "efeito": "chakraFogo:+1;",
+        "descricao": "Fornece 1 energia de fogo",
+        "imagem": "imagens/katon.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CF03",
+        "naturezaChakra": "chakraFogo",
+        "efeito": "chakraFogo:+1;",
+        "descricao": "Fornece 1 energia de fogo",
+        "imagem": "imagens/katon.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CF04",
+        "naturezaChakra": "chakraFogo",
+        "efeito": "chakraFogo:+1;",
+        "descricao": "Fornece 1 energia de fogo",
+        "imagem": "imagens/katon.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CF05",
+        "naturezaChakra": "chakraFogo",
+        "efeito": "chakraFogo:+1;",
+        "descricao": "Fornece 1 energia de fogo",
+        "imagem": "imagens/katon.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CF06",
+        "naturezaChakra": "chakraFogo",
+        "efeito": "chakraFogo:+1;",
+        "descricao": "Fornece 1 energia de fogo",
+        "imagem": "imagens/katon.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CF07",
+        "naturezaChakra": "chakraFogo",
+        "efeito": "chakraFogo:+1;",
+        "descricao": "Fornece 1 energia de fogo",
+        "imagem": "imagens/katon.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CF08",
+        "naturezaChakra": "chakraFogo",
+        "efeito": "chakraFogo:+1;",
+        "descricao": "Fornece 1 energia de fogo",
+        "imagem": "imagens/katon.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CF09",
+        "naturezaChakra": "chakraFogo",
+        "efeito": "chakraFogo:+1;",
+        "descricao": "Fornece 1 energia de fogo",
+        "imagem": "imagens/katon.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CF10",
+        "naturezaChakra": "chakraFogo",
+        "efeito": "chakraFogo:+1;",
+        "descricao": "Fornece 1 energia de fogo",
+        "imagem": "imagens/katon.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CF11",
+        "naturezaChakra": "chakraFogo",
+        "efeito": "chakraFogo:+1;",
+        "descricao": "Fornece 1 energia de fogo",
+        "imagem": "imagens/katon.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CF12",
+        "naturezaChakra": "chakraFogo",
+        "efeito": "chakraFogo:+1;",
+        "descricao": "Fornece 1 energia de fogo",
+        "imagem": "imagens/katon.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CF13",
+        "naturezaChakra": "chakraFogo",
+        "efeito": "chakraFogo:+1;",
+        "descricao": "Fornece 1 energia de fogo",
+        "imagem": "imagens/katon.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CF14",
+        "naturezaChakra": "chakraFogo",
+        "efeito": "chakraFogo:+1;",
+        "descricao": "Fornece 1 energia de fogo",
+        "imagem": "imagens/katon.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CF15",
+        "naturezaChakra": "chakraFogo",
+        "efeito": "chakraFogo:+1;",
+        "descricao": "Fornece 1 energia de fogo",
+        "imagem": "imagens/katon.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CF16",
+        "naturezaChakra": "chakraFogo",
+        "efeito": "chakraFogo:+1;",
+        "descricao": "Fornece 1 energia de fogo",
+        "imagem": "imagens/katon.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CF17",
+        "naturezaChakra": "chakraFogo",
+        "efeito": "chakraFogo:+1;",
+        "descricao": "Fornece 1 energia de fogo",
+        "imagem": "imagens/katon.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CF18",
+        "naturezaChakra": "chakraFogo",
+        "efeito": "chakraFogo:+1;",
+        "descricao": "Fornece 1 energia de fogo",
+        "imagem": "imagens/katon.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CF19",
+        "naturezaChakra": "chakraFogo",
+        "efeito": "chakraFogo:+1;",
+        "descricao": "Fornece 1 energia de fogo",
+        "imagem": "imagens/katon.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CF20",
+        "naturezaChakra": "chakraFogo",
+        "efeito": "chakraFogo:+1;",
+        "descricao": "Fornece 1 energia de fogo",
+        "imagem": "imagens/katon.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CV01",
+        "naturezaChakra": "chakraVento;chakraAgua",
+        "efeito": "chakraVento:+1;chakraAgua:+1",
+        "descricao": "Fornece 1 energia de vento e 1 agua",
+        "imagem": "imagens/fuuton.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CV02",
+        "naturezaChakra": "chakraVento",
+        "efeito": "chakraVento:+1",
+        "descricao": "Fornece 1 energia de vento",
+        "imagem": "imagens/fuuton.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CV03",
+        "naturezaChakra": "chakraVento",
+        "efeito": "chakraVento:+1",
+        "descricao": "Fornece 1 energia de vento",
+        "imagem": "imagens/fuuton.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CV04",
+        "naturezaChakra": "chakraVento",
+        "efeito": "chakraVento:+1",
+        "descricao": "Fornece 1 energia de vento",
+        "imagem": "imagens/fuuton.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CV05",
+        "naturezaChakra": "chakraVento",
+        "efeito": "chakraVento:+1",
+        "descricao": "Fornece 1 energia de vento",
+        "imagem": "imagens/fuuton.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CV06",
+        "naturezaChakra": "chakraVento",
+        "efeito": "chakraVento:+1",
+        "descricao": "Fornece 1 energia de vento",
+        "imagem": "imagens/fuuton.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CV07",
+        "naturezaChakra": "chakraVento",
+        "efeito": "chakraVento:+1",
+        "descricao": "Fornece 1 energia de vento",
+        "imagem": "imagens/fuuton.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CV08",
+        "naturezaChakra": "chakraVento",
+        "efeito": "chakraVento:+1",
+        "descricao": "Fornece 1 energia de vento",
+        "imagem": "imagens/fuuton.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CV09",
+        "naturezaChakra": "chakraVento",
+        "efeito": "chakraVento:+1",
+        "descricao": "Fornece 1 energia de vento",
+        "imagem": "imagens/fuuton.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CV10",
+        "naturezaChakra": "chakraVento",
+        "efeito": "chakraVento:+1",
+        "descricao": "Fornece 1 energia de vento",
+        "imagem": "imagens/fuuton.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CV11",
+        "naturezaChakra": "chakraVento",
+        "efeito": "chakraVento:+1",
+        "descricao": "Fornece 1 energia de vento",
+        "imagem": "imagens/fuuton.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CV12",
+        "naturezaChakra": "chakraVento",
+        "efeito": "chakraVento:+1",
+        "descricao": "Fornece 1 energia de vento",
+        "imagem": "imagens/fuuton.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CV13",
+        "naturezaChakra": "chakraVento",
+        "efeito": "chakraVento:+1",
+        "descricao": "Fornece 1 energia de vento",
+        "imagem": "imagens/fuuton.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CV14",
+        "naturezaChakra": "chakraVento",
+        "efeito": "chakraVento:+1",
+        "descricao": "Fornece 1 energia de vento",
+        "imagem": "imagens/fuuton.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CV15",
+        "naturezaChakra": "chakraVento",
+        "efeito": "chakraVento:+1",
+        "descricao": "Fornece 1 energia de vento",
+        "imagem": "imagens/fuuton.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CV16",
+        "naturezaChakra": "chakraVento",
+        "efeito": "chakraVento:+1",
+        "descricao": "Fornece 1 energia de vento",
+        "imagem": "imagens/fuuton.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CV17",
+        "naturezaChakra": "chakraVento",
+        "efeito": "chakraVento:+1",
+        "descricao": "Fornece 1 energia de vento",
+        "imagem": "imagens/fuuton.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CV18",
+        "naturezaChakra": "chakraVento",
+        "efeito": "chakraVento:+1",
+        "descricao": "Fornece 1 energia de vento",
+        "imagem": "imagens/fuuton.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CV19",
+        "naturezaChakra": "chakraVento",
+        "efeito": "chakraVento:+1",
+        "descricao": "Fornece 1 energia de vento",
+        "imagem": "imagens/fuuton.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CV20",
+        "naturezaChakra": "chakraVento",
+        "efeito": "chakraVento:+1",
+        "descricao": "Fornece 1 energia de vento",
+        "imagem": "imagens/fuuton.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CR01",
+        "naturezaChakra": "chakraRaio",
+        "efeito": "chakraRaio:+1; chakra:-10",
+        "descricao": "Fornece 1 energia de raio ao custo de 10 chakra",
+        "imagem": "imagens/raiton.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CR02",
+        "naturezaChakra": "chakraRaio",
+        "efeito": "chakraRaio:+1",
+        "descricao": "Fornece 1 energia de raio",
+        "imagem": "imagens/raiton.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CR03",
+        "naturezaChakra": "chakraRaio",
+        "efeito": "chakraRaio:+1",
+        "descricao": "Fornece 1 energia de raio",
+        "imagem": "imagens/raiton.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CR04",
+        "naturezaChakra": "chakraRaio",
+        "efeito": "chakraRaio:+1",
+        "descricao": "Fornece 1 energia de raio",
+        "imagem": "imagens/raiton.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CR05",
+        "naturezaChakra": "chakraRaio",
+        "efeito": "chakraRaio:+1",
+        "descricao": "Fornece 1 energia de raio",
+        "imagem": "imagens/raiton.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CR06",
+        "naturezaChakra": "chakraRaio",
+        "efeito": "chakraRaio:+1",
+        "descricao": "Fornece 1 energia de raio",
+        "imagem": "imagens/raiton.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CR07",
+        "naturezaChakra": "chakraRaio",
+        "efeito": "chakraRaio:+1",
+        "descricao": "Fornece 1 energia de raio",
+        "imagem": "imagens/raiton.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CR08",
+        "naturezaChakra": "chakraRaio",
+        "efeito": "chakraRaio:+1",
+        "descricao": "Fornece 1 energia de raio",
+        "imagem": "imagens/raiton.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CR09",
+        "naturezaChakra": "chakraRaio",
+        "efeito": "chakraRaio:+1",
+        "descricao": "Fornece 1 energia de raio",
+        "imagem": "imagens/raiton.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CR10",
+        "naturezaChakra": "chakraRaio",
+        "efeito": "chakraRaio:+1",
+        "descricao": "Fornece 1 energia de raio",
+        "imagem": "imagens/raiton.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CR11",
+        "naturezaChakra": "chakraRaio",
+        "efeito": "chakraRaio:+1",
+        "descricao": "Fornece 1 energia de raio",
+        "imagem": "imagens/raiton.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CR12",
+        "naturezaChakra": "chakraRaio",
+        "efeito": "chakraRaio:+1",
+        "descricao": "Fornece 1 energia de raio",
+        "imagem": "imagens/raiton.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CR13",
+        "naturezaChakra": "chakraRaio",
+        "efeito": "chakraRaio:+1",
+        "descricao": "Fornece 1 energia de raio",
+        "imagem": "imagens/raiton.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CR14",
+        "naturezaChakra": "chakraRaio",
+        "efeito": "chakraRaio:+1",
+        "descricao": "Fornece 1 energia de raio",
+        "imagem": "imagens/raiton.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CR15",
+        "naturezaChakra": "chakraRaio",
+        "efeito": "chakraRaio:+1",
+        "descricao": "Fornece 1 energia de raio",
+        "imagem": "imagens/raiton.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CR16",
+        "naturezaChakra": "chakraRaio",
+        "efeito": "chakraRaio:+1",
+        "descricao": "Fornece 1 energia de raio",
+        "imagem": "imagens/raiton.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CR17",
+        "naturezaChakra": "chakraRaio",
+        "efeito": "chakraRaio:+1",
+        "descricao": "Fornece 1 energia de raio",
+        "imagem": "imagens/raiton.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CR18",
+        "naturezaChakra": "chakraRaio",
+        "efeito": "chakraRaio:+1",
+        "descricao": "Fornece 1 energia de raio",
+        "imagem": "imagens/raiton.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CR19",
+        "naturezaChakra": "chakraRaio",
+        "efeito": "chakraRaio:+1",
+        "descricao": "Fornece 1 energia de raio",
+        "imagem": "imagens/raiton.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CR20",
+        "naturezaChakra": "chakraRaio",
+        "efeito": "chakraRaio:+1",
+        "descricao": "Fornece 1 energia de raio",
+        "imagem": "imagens/raiton.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CT01",
+        "naturezaChakra": "chakraTerra",
+        "efeito": "chakraTerra:+1; velocidade:-5",
+        "descricao": "Fornece 1 energia de terra e reduz 5 em speed",
+        "imagem": "imagens/doton.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CT02",
+        "naturezaChakra": "chakraTerra",
+        "efeito": "chakraTerra:+1",
+        "descricao": "Fornece 1 energia de terra",
+        "imagem": "imagens/doton.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CT03",
+        "naturezaChakra": "chakraTerra",
+        "efeito": "chakraTerra:+1",
+        "descricao": "Fornece 1 energia de terra",
+        "imagem": "imagens/doton.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CT04",
+        "naturezaChakra": "chakraTerra",
+        "efeito": "chakraTerra:+1",
+        "descricao": "Fornece 1 energia de terra",
+        "imagem": "imagens/doton.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CT05",
+        "naturezaChakra": "chakraTerra",
+        "efeito": "chakraTerra:+1",
+        "descricao": "Fornece 1 energia de terra",
+        "imagem": "imagens/doton.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CT06",
+        "naturezaChakra": "chakraTerra",
+        "efeito": "chakraTerra:+1",
+        "descricao": "Fornece 1 energia de terra",
+        "imagem": "imagens/doton.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CT07",
+        "naturezaChakra": "chakraTerra",
+        "efeito": "chakraTerra:+1",
+        "descricao": "Fornece 1 energia de terra",
+        "imagem": "imagens/doton.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CT08",
+        "naturezaChakra": "chakraTerra",
+        "efeito": "chakraTerra:+1",
+        "descricao": "Fornece 1 energia de terra",
+        "imagem": "imagens/doton.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CT09",
+        "naturezaChakra": "chakraTerra",
+        "efeito": "chakraTerra:+1",
+        "descricao": "Fornece 1 energia de terra",
+        "imagem": "imagens/doton.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CT10",
+        "naturezaChakra": "chakraTerra",
+        "efeito": "chakraTerra:+1",
+        "descricao": "Fornece 1 energia de terra",
+        "imagem": "imagens/doton.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CT11",
+        "naturezaChakra": "chakraTerra",
+        "efeito": "chakraTerra:+1",
+        "descricao": "Fornece 1 energia de terra",
+        "imagem": "imagens/doton.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CT12",
+        "naturezaChakra": "chakraTerra",
+        "efeito": "chakraTerra:+1",
+        "descricao": "Fornece 1 energia de terra",
+        "imagem": "imagens/doton.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CT13",
+        "naturezaChakra": "chakraTerra",
+        "efeito": "chakraTerra:+1",
+        "descricao": "Fornece 1 energia de terra",
+        "imagem": "imagens/doton.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CT14",
+        "naturezaChakra": "chakraTerra",
+        "efeito": "chakraTerra:+1",
+        "descricao": "Fornece 1 energia de terra",
+        "imagem": "imagens/doton.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CT15",
+        "naturezaChakra": "chakraTerra",
+        "efeito": "chakraTerra:+1",
+        "descricao": "Fornece 1 energia de terra",
+        "imagem": "imagens/doton.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CT16",
+        "naturezaChakra": "chakraTerra",
+        "efeito": "chakraTerra:+1",
+        "descricao": "Fornece 1 energia de terra",
+        "imagem": "imagens/doton.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CT17",
+        "naturezaChakra": "chakraTerra",
+        "efeito": "chakraTerra:+1",
+        "descricao": "Fornece 1 energia de terra",
+        "imagem": "imagens/doton.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CT18",
+        "naturezaChakra": "chakraTerra",
+        "efeito": "chakraTerra:+1",
+        "descricao": "Fornece 1 energia de terra",
+        "imagem": "imagens/doton.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CT19",
+        "naturezaChakra": "chakraTerra",
+        "efeito": "chakraTerra:+1",
+        "descricao": "Fornece 1 energia de terra",
+        "imagem": "imagens/doton.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CT20",
+        "naturezaChakra": "chakraTerra",
+        "efeito": "chakraTerra:+1",
+        "descricao": "Fornece 1 energia de terra",
+        "imagem": "imagens/doton.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CA01",
+        "naturezaChakra": "chakraAgua",
+        "efeito": "chakraAgua:+1;hp:-10",
+        "descricao": "Fornece 1 energia de agua",
+        "imagem": "imagens/suiton.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CA02",
+        "naturezaChakra": "chakraAgua",
+        "efeito": "chakraAgua:+1",
+        "descricao": "Fornece 1 energia de agua e reduz 10 de HP",
+        "imagem": "imagens/suiton.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CA03",
+        "naturezaChakra": "chakraAgua",
+        "efeito": "chakraAgua:+1",
+        "descricao": "Fornece 1 energia de agua",
+        "imagem": "imagens/suiton.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CA04",
+        "naturezaChakra": "chakraAgua",
+        "efeito": "chakraAgua:+1",
+        "descricao": "Fornece 1 energia de agua",
+        "imagem": "imagens/suiton.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CA05",
+        "naturezaChakra": "chakraAgua",
+        "efeito": "chakraAgua:+1",
+        "descricao": "Fornece 1 energia de agua",
+        "imagem": "imagens/suiton.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CA06",
+        "naturezaChakra": "chakraAgua",
+        "efeito": "chakraAgua:+1",
+        "descricao": "Fornece 1 energia de agua",
+        "imagem": "imagens/suiton.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CA07",
+        "naturezaChakra": "chakraAgua",
+        "efeito": "chakraAgua:+1",
+        "descricao": "Fornece 1 energia de agua",
+        "imagem": "imagens/suiton.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CA08",
+        "naturezaChakra": "chakraAgua",
+        "efeito": "chakraAgua:+1",
+        "descricao": "Fornece 1 energia de agua",
+        "imagem": "imagens/suiton.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CA09",
+        "naturezaChakra": "chakraAgua",
+        "efeito": "chakraAgua:+1",
+        "descricao": "Fornece 1 energia de agua",
+        "imagem": "imagens/suiton.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CA10",
+        "naturezaChakra": "chakraAgua",
+        "efeito": "chakraAgua:+1",
+        "descricao": "Fornece 1 energia de agua",
+        "imagem": "imagens/suiton.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CA11",
+        "naturezaChakra": "chakraAgua",
+        "efeito": "chakraAgua:+1",
+        "descricao": "Fornece 1 energia de agua",
+        "imagem": "imagens/suiton.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CA12",
+        "naturezaChakra": "chakraAgua",
+        "efeito": "chakraAgua:+1",
+        "descricao": "Fornece 1 energia de agua",
+        "imagem": "imagens/suiton.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CA13",
+        "naturezaChakra": "chakraAgua",
+        "efeito": "chakraAgua:+1",
+        "descricao": "Fornece 1 energia de agua",
+        "imagem": "imagens/suiton.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CA14",
+        "naturezaChakra": "chakraAgua",
+        "efeito": "chakraAgua:+1",
+        "descricao": "Fornece 1 energia de agua",
+        "imagem": "imagens/suiton.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CA15",
+        "naturezaChakra": "chakraAgua",
+        "efeito": "chakraAgua:+1",
+        "descricao": "Fornece 1 energia de agua",
+        "imagem": "imagens/suiton.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CA16",
+        "naturezaChakra": "chakraAgua",
+        "efeito": "chakraAgua:+1",
+        "descricao": "Fornece 1 energia de agua",
+        "imagem": "imagens/suiton.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CA17",
+        "naturezaChakra": "chakraAgua",
+        "efeito": "chakraAgua:+1",
+        "descricao": "Fornece 1 energia de agua",
+        "imagem": "imagens/suiton.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CA18",
+        "naturezaChakra": "chakraAgua",
+        "efeito": "chakraAgua:+1",
+        "descricao": "Fornece 1 energia de agua",
+        "imagem": "imagens/suiton.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CA19",
+        "naturezaChakra": "chakraAgua",
+        "efeito": "chakraAgua:+1",
+        "descricao": "Fornece 1 energia de agua",
+        "imagem": "imagens/suiton.png"
+    },
+    {
+        "tipo": "Chakra",
+        "idCard": "CA20",
+        "naturezaChakra": "chakraAgua",
+        "efeito": "chakraAgua:+1",
+        "descricao": "Fornece 1 energia de agua",
+        "imagem": "imagens/suiton.png"
+    }
+]

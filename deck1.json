@@ -1,0 +1,423 @@
+[
+  {
+    "id": "deck1",
+    "name": "Deck 1",
+    "cards": [
+      {
+        "tipo": "Tool",
+        "idCard": "T012",
+        "estagio": "",
+        "nome": "Kunai",
+        "efeito": "taijutsu:15",
+        "descricao": "Kunai que aumenta ataque",
+        "imagem": "imagens/tool.png"
+      },
+      {
+        "tipo": "Tool",
+        "idCard": "T008",
+        "estagio": "",
+        "nome": "Bomba de fumaça",
+        "efeito": "velocidade:10",
+        "descricao": "Pergaminho de invocação",
+        "imagem": "imagens/tool.png"
+      },
+      {
+        "tipo": "Tool",
+        "idCard": "T010",
+        "estagio": "",
+        "nome": "Bomba de fumaça",
+        "efeito": "velocidade:10",
+        "descricao": "Pergaminho de invocação",
+        "imagem": "imagens/tool.png"
+      },
+      {
+        "tipo": "Tool",
+        "idCard": "T014",
+        "estagio": "",
+        "nome": "Kunai",
+        "efeito": "taijutsu:15",
+        "descricao": "Kunai que aumenta ataque",
+        "imagem": "imagens/tool.png"
+      },
+      {
+        "tipo": "Tool",
+        "idCard": "T018",
+        "estagio": "",
+        "nome": "Concentração defensiva",
+        "efeito": "defesa:15;genjutsu:20;velocidade:-5",
+        "descricao": "Leque que aumenta defesa",
+        "imagem": "imagens/tool.png"
+      },
+      {
+        "tipo": "Tool",
+        "idCard": "T020",
+        "estagio": "",
+        "nome": "Concentração defensiva",
+        "efeito": "defesa:15;genjutsu:20;velocidade:-5",
+        "descricao": "Leque que aumenta defesa",
+        "imagem": "imagens/tool.png"
+      },
+      {
+        "tipo": "Ninja",
+        "idCard": "N001_1v01",
+        "registro": "N001",
+        "nome": "Naruto Uzumaki",
+        "estagio": 1,
+        "vila": "Konoha",
+        "ranking": "Genin",
+        "naturezaNinja": "Yang",
+        "subNatureza": null,
+        "efeitoNinja": "Se supJ1a.registro=\"\"N002\"\" bonus=10;",
+        "DescEfeitoNinja": "Ganha 10 de ataque se o Sasuke estiver no time",
+        "hp": 60,
+        "chakra": 100,
+        "velocidade": 35,
+        "taijutsu": 30,
+        "defesa": 20,
+        "genjutsu": 10,
+        "ninjutsu": 15,
+        "chakraFogo": 0,
+        "chakraVento": 1,
+        "chakraRaio": 0,
+        "chakraTerra": 0,
+        "chakraAgua": 0,
+        "jutsus": [
+          {
+            "estiloJutsu": "Taijutsu",
+            "nomeJutsu": "Ninpou Snake Hands",
+            "categoria": "ataque",
+            "naturezaJutsu": "Yang",
+            "custoChakra": 20,
+            "requisitoChakra": {
+              "chakraFogo": 0,
+              "chakraVento": 0,
+              "chakraRaio": 0,
+              "chakraTerra": 0,
+              "chakraAgua": 0,
+              "elementosTotal": 3
+            },
+            "powerJutsu": 40,
+            "efeito": null,
+            "detalheJutsu": null,
+            "logoJutsu": "imagens/taijutsu.png"
+          },
+          {
+            "estiloJutsu": "Ninjutsu",
+            "nomeJutsu": "Futon Nome",
+            "categoria": "defesa",
+            "naturezaJutsu": "Terra",
+            "custoChakra": 30,
+            "requisitoChakra": {
+              "chakraFogo": 0,
+              "chakraVento": 1,
+              "chakraRaio": 0,
+              "chakraTerra": 0,
+              "chakraAgua": 0,
+              "elementosTotal": 0
+            },
+            "powerJutsu": 80,
+            "efeito": null,
+            "detalheJutsu": null,
+            "logoJutsu": "imagens/futon.png"
+          },
+          {
+            "estiloJutsu": "Genjutsu",
+            "nomeJutsu": "Ninpou Paralizia",
+            "categoria": "ataque",
+            "naturezaJutsu": "Ying",
+            "custoChakra": 20,
+            "requisitoChakra": {
+              "chakraFogo": 0,
+              "chakraVento": 0,
+              "chakraRaio": 0,
+              "chakraTerra": 0,
+              "chakraAgua": 0,
+              "elementosTotal": 2
+            },
+            "powerJutsu": 30,
+            "efeito": null,
+            "detalheJutsu": null,
+            "logoJutsu": "imagens/genjutsu.png"
+          },
+          {
+            "estiloJutsu": "Evasiva",
+            "nomeJutsu": "Hebi Kawarimi",
+            "categoria": "evasiva",
+            "naturezaJutsu": "Yang",
+            "custoChakra": 10,
+            "requisitoChakra": {
+              "chakraFogo": 0,
+              "chakraVento": 1,
+              "chakraRaio": 0,
+              "chakraTerra": 0,
+              "chakraAgua": 0,
+              "elementosTotal": 2
+            },
+            "powerJutsu": 20,
+            "efeito": null,
+            "detalheJutsu": null,
+            "logoJutsu": "imagens/kawarimi.png"
+          }
+        ],
+        "imagem": "imagens/N001_1v01.png"
+      },
+      {
+        "tipo": "Ninja",
+        "idCard": "N003_1v01",
+        "registro": "N003",
+        "nome": "Jiraya",
+        "estagio": 1,
+        "vila": "Konoha",
+        "ranking": "Sannin",
+        "naturezaNinja": "Fogo",
+        "subNatureza": "Yang",
+        "efeitoNinja": "Se liderOponente.registro=\"\"N004\"\" bonus=10;",
+        "DescEfeitoNinja": "Ganha 10 de ataque se o Orochimaru for o oponente",
+        "hp": 100,
+        "chakra": 90,
+        "velocidade": 55,
+        "taijutsu": 70,
+        "defesa": 46,
+        "genjutsu": 30,
+        "ninjutsu": 15,
+        "chakraFogo": 1,
+        "chakraVento": 0,
+        "chakraRaio": 0,
+        "chakraTerra": 0,
+        "chakraAgua": 0,
+        "jutsus": [
+          {
+            "estiloJutsu": "Taijutsu",
+            "nomeJutsu": "Ninpou Snake Hands",
+            "categoria": "ataque",
+            "naturezaJutsu": "Yang",
+            "custoChakra": 20,
+            "requisitoChakra": {
+              "chakraFogo": 0,
+              "chakraVento": 0,
+              "chakraRaio": 0,
+              "chakraTerra": 0,
+              "chakraAgua": 0,
+              "elementosTotal": 3
+            },
+            "powerJutsu": 40,
+            "efeito": null,
+            "detalheJutsu": null,
+            "logoJutsu": "imagens/taijutsu.png"
+          },
+          {
+            "estiloJutsu": "Ninjutsu",
+            "nomeJutsu": "Futon Nome",
+            "categoria": "defesa",
+            "naturezaJutsu": "Terra",
+            "custoChakra": 30,
+            "requisitoChakra": {
+              "chakraFogo": 0,
+              "chakraVento": 1,
+              "chakraRaio": 0,
+              "chakraTerra": 0,
+              "chakraAgua": 0,
+              "elementosTotal": 0
+            },
+            "powerJutsu": 80,
+            "efeito": null,
+            "detalheJutsu": null,
+            "logoJutsu": "imagens/futon.png"
+          },
+          {
+            "estiloJutsu": "Genjutsu",
+            "nomeJutsu": "Ninpou Paralizia",
+            "categoria": "ataque",
+            "naturezaJutsu": "Ying",
+            "custoChakra": 20,
+            "requisitoChakra": {
+              "chakraFogo": 0,
+              "chakraVento": 0,
+              "chakraRaio": 0,
+              "chakraTerra": 0,
+              "chakraAgua": 0,
+              "elementosTotal": 2
+            },
+            "powerJutsu": 30,
+            "efeito": null,
+            "detalheJutsu": null,
+            "logoJutsu": "imagens/genjutsu.png"
+          },
+          {
+            "estiloJutsu": "Evasiva",
+            "nomeJutsu": "Hebi Kawarimi",
+            "categoria": "evasiva",
+            "naturezaJutsu": "Yang",
+            "custoChakra": 10,
+            "requisitoChakra": {
+              "chakraFogo": 0,
+              "chakraVento": 1,
+              "chakraRaio": 0,
+              "chakraTerra": 0,
+              "chakraAgua": 0,
+              "elementosTotal": 2
+            },
+            "powerJutsu": 20,
+            "efeito": null,
+            "detalheJutsu": null,
+            "logoJutsu": "imagens/kawarimi.png"
+          }
+        ],
+        "imagem": "imagens/N003_1v01.png"
+      },
+      {
+        "tipo": "Ninja",
+        "idCard": "N001_2v01",
+        "registro": "N001",
+        "nome": "Naruto Uzumaki",
+        "estagio": 2,
+        "vila": "Konoha",
+        "ranking": "Jinchuuriki Genin",
+        "naturezaNinja": "Vento",
+        "subNatureza": "Yang",
+        "efeitoNinja": "Se liderOponente.registro=\"\"N002\"\" bonus=10;",
+        "DescEfeitoNinja": "Ganha 10 de ataque se o Sasuke for o oponente",
+        "hp": 100,
+        "chakra": 100,
+        "velocidade": 45,
+        "taijutsu": 50,
+        "defesa": 26,
+        "genjutsu": 10,
+        "ninjutsu": 15,
+        "chakraFogo": 0,
+        "chakraVento": 1,
+        "chakraRaio": 0,
+        "chakraTerra": 0,
+        "chakraAgua": 0,
+        "jutsus": [
+          {
+            "estiloJutsu": "Taijutsu",
+            "nomeJutsu": "Ninpou Snake Hands",
+            "categoria": "ataque",
+            "naturezaJutsu": "Yang",
+            "custoChakra": 20,
+            "requisitoChakra": {
+              "chakraFogo": 0,
+              "chakraVento": 0,
+              "chakraRaio": 0,
+              "chakraTerra": 0,
+              "chakraAgua": 0,
+              "elementosTotal": 3
+            },
+            "powerJutsu": 40,
+            "efeito": null,
+            "detalheJutsu": null,
+            "logoJutsu": "imagens/taijutsu.png"
+          },
+          {
+            "estiloJutsu": "Ninjutsu",
+            "nomeJutsu": "Futon Nome",
+            "categoria": "defesa",
+            "naturezaJutsu": "Terra",
+            "custoChakra": 30,
+            "requisitoChakra": {
+              "chakraFogo": 0,
+              "chakraVento": 1,
+              "chakraRaio": 0,
+              "chakraTerra": 0,
+              "chakraAgua": 0,
+              "elementosTotal": 0
+            },
+            "powerJutsu": 80,
+            "efeito": null,
+            "detalheJutsu": null,
+            "logoJutsu": "imagens/futon.png"
+          },
+          {
+            "estiloJutsu": "Genjutsu",
+            "nomeJutsu": "Ninpou Paralizia",
+            "categoria": "ataque",
+            "naturezaJutsu": "Ying",
+            "custoChakra": 20,
+            "requisitoChakra": {
+              "chakraFogo": 0,
+              "chakraVento": 0,
+              "chakraRaio": 0,
+              "chakraTerra": 0,
+              "chakraAgua": 0,
+              "elementosTotal": 2
+            },
+            "powerJutsu": 30,
+            "efeito": null,
+            "detalheJutsu": null,
+            "logoJutsu": "imagens/genjutsu.png"
+          },
+          {
+            "estiloJutsu": "Evasiva",
+            "nomeJutsu": "Hebi Kawarimi",
+            "categoria": "evasiva",
+            "naturezaJutsu": "Yang",
+            "custoChakra": 10,
+            "requisitoChakra": {
+              "chakraFogo": 0,
+              "chakraVento": 1,
+              "chakraRaio": 0,
+              "chakraTerra": 0,
+              "chakraAgua": 0,
+              "elementosTotal": 2
+            },
+            "powerJutsu": 20,
+            "efeito": null,
+            "detalheJutsu": null,
+            "logoJutsu": "imagens/kawarimi.png"
+          }
+        ],
+        "imagem": "imagens/N001_2v01.png"
+      },
+      {
+        "tipo": "Chakra",
+        "idCard": "CF03",
+        "naturezaChakra": "chakraFogo",
+        "efeito": "chakraFogo:+1;",
+        "descricao": "Fornece 1 energia de fogo",
+        "imagem": "imagens/katon.png"
+      },
+      {
+        "tipo": "Chakra",
+        "idCard": "CV01",
+        "naturezaChakra": "chakraVento;chakraAgua",
+        "efeito": "chakraVento:+1;chakraAgua:+1",
+        "descricao": "Fornece 1 energia de vento e 1 agua",
+        "imagem": "imagens/fuuton.png"
+      },
+      {
+        "tipo": "Chakra",
+        "idCard": "CV08",
+        "naturezaChakra": "chakraVento",
+        "efeito": "chakraVento:+1",
+        "descricao": "Fornece 1 energia de vento",
+        "imagem": "imagens/fuuton.png"
+      },
+      {
+        "tipo": "Chakra",
+        "idCard": "CF18",
+        "naturezaChakra": "chakraFogo",
+        "efeito": "chakraFogo:+1;",
+        "descricao": "Fornece 1 energia de fogo",
+        "imagem": "imagens/katon.png"
+      },
+      {
+        "tipo": "Chakra",
+        "idCard": "CR14",
+        "naturezaChakra": "chakraRaio",
+        "efeito": "chakraRaio:+1",
+        "descricao": "Fornece 1 energia de raio",
+        "imagem": "imagens/raiton.png"
+      },
+      {
+        "tipo": "Chakra",
+        "idCard": "CT01",
+        "naturezaChakra": "chakraTerra",
+        "efeito": "chakraTerra:+1; velocidade:-5",
+        "descricao": "Fornece 1 energia de terra e reduz 5 em speed",
+        "imagem": "imagens/doton.png"
+      }
+    ],
+    "image": "imagens/deck1.png"
+  }
+]

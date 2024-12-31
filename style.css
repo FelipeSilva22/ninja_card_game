@@ -1,0 +1,591 @@
+/* Resetando estilos padrões */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  /* Estilo do corpo */
+  body {
+    font-family: 'Noto Sans JP', sans-serif;
+    background-color: #f8f8f8;
+    color: #333;
+    padding: 20px;
+    margin: 0;
+  }
+  
+  h1, h2, h3 {
+    text-align: center; /* Centraliza o texto */
+    font-weight: 700;
+    color: #ff6600;
+  }
+
+  h4, h5, h6 {
+    text-align: center;
+    font-weight: 700;
+    color: #ff6600;
+  }
+  
+  p {
+    font-weight: 400;
+    color: #666;
+  }
+  
+  
+  /* Adicionar um contêiner centralizado para as páginas */
+.container {
+  max-width: 1200px; /* Limita a largura máxima */
+  margin: 0 auto; /* Centraliza horizontalmente */
+  padding: 20px; /* Adiciona espaçamento interno */
+}
+
+/* Centralizar o texto das seções */
+.menu, .visualizar, .editar, .iniciar {
+  text-align: center; /* Centraliza o texto */
+  margin: 50px auto; /* Adiciona espaçamento superior/inferior */
+  padding: 20px;
+}
+input[type="text"] {
+  padding: 10px;
+  margin: 10px 0;
+  font-size: 16px;
+  width: 80%;
+  max-width: 400px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}  
+  button {
+    padding: 15px 30px;
+    font-size: 16px;
+    margin-top: 20px;
+    margin: 10px;
+    border: none;
+    background-color: #FF6600;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  button:hover {
+    background-color: #cc5200;
+  }
+  
+  footer {
+    text-align: center; /* Centraliza o texto */
+    margin-top: 30px;
+    font-size: 14px;
+    color: #555;
+  }
+
+/* Grade de cards */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  padding: 20px;
+  justify-content: center;
+}
+  
+/* Estilo dos cards */
+.card {
+  background: linear-gradient(145deg, #f0f0f0, #cfcfcf);
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2), -4px -4px 8px rgba(255, 255, 255, 0.7);
+  text-align: center;
+  padding: 10px;
+}
+/*
+.card.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+*/
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.3), -6px -6px 12px rgba(255, 255, 255, 0.8);
+}
+  
+/* Imagens pequenas para cards */
+.card img {
+  width: 120px;
+  height: auto;
+  margin: 10px auto;
+  border-radius: 10px;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+  
+/* Título e texto do card */
+.card h3 {
+  font-size: 18px;
+  color: #333;
+  margin: 10px 0;
+}
+
+.card p {
+  font-size: 14px;
+  color: #666;
+}
+
+/* Contêiner dos Filtros */
+#filter-container {
+    margin: 20px 0;
+    text-align: center;
+  }
+  
+  #filter-container label {
+    margin-right: 10px;
+    font-weight: bold;
+  }
+  
+  #filter-container select {
+    margin: 0 10px;
+    padding: 5px 10px;
+    font-size: 14px;
+  }
+  #clear-filters {
+    margin-left: 20px;
+    padding: 8px 15px;
+    background-color: #FF6600;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  
+  #clear-filters:hover {
+    background-color: #cc5200;
+  }
+/* Modal - Janela */
+.modal {
+  display: none; /* Modal começa escondido */
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  /*display: flex;*/
+  justify-content: center;
+  align-items: center;
+}
+
+/* Conteúdo do Modal */
+.modal-content {
+  /*display: none;*/
+  background: #fff;
+  border-radius: 15px;
+  padding: 20px;
+  width: 90%;
+  max-width: 800px;
+  box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.3);
+  animation: fadeIn 0.3s ease-in-out;
+  /*animation: fadeIn 0.3s ease;*/
+}
+.modal.fade-out .modal-content {
+  animation: fadeOut 0.5s ease;
+}
+  
+  /* Animação para o modal */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  
+/* Botão Fechar */
+.close-btn {
+  float: right;
+  font-size: 24px;
+  color: #333;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.close-btn:hover {
+  color: #ff6600;
+}
+  
+/* Layout do Modal em colunas */
+.modal-layout {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 20px;
+  align-items: flex-start;
+}
+  
+  #modal-image {
+    flex: 4; /* Define que a imagem ocupará 1 parte do espaço */
+    text-align: center;
+  }
+  
+  #modal-image img {
+    width: 100%;
+    max-width: 400px;
+    border-radius: 10px;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  #modal-details {
+    flex: 3;
+    line-height: 1.0; /* Melhora a legibilidade */
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    color: #555;
+  }
+
+  #modal-details h1 {
+    margin-bottom: 10px;
+    font-size: 30px;
+    color: #ff6600;
+  }
+  
+  #modal-details p {
+    /*margin: 10px 0;*/
+    font-size: 14px;
+    line-height: 1.3;
+  }
+  
+  #modal-details ul {
+    /*margin-top: 10px;*/
+    line-height: 1.3;
+    padding-left: 10px;
+    font-size: 14px;
+  }
+  
+
+/* Girar ao passar o mouse no ícone */
+.jutsu-logo {
+  width: 30px;
+  vertical-align: middle;
+  margin-right: 2px;
+  transition: transform 0.3s ease-in-out;
+  transform: rotate(360deg); /* Efeito de rotação */
+}
+/* Girar ao passar o mouse no item da lista ou no logo */
+.modal-details ul li:hover .jutsu-logo {
+  transform: rotate(360deg);
+}
+
+/* Animação de escala para o nome do jutsu */
+.modal-details ul li:hover strong {
+  transition: transform 0.2s ease-in-out, color 0.2s ease-in-out; /* Suaviza a transição */
+  transform: scale(1.1); /* Aumenta o tamanho do texto */
+  color: #ff6600; /* Muda a cor do texto */
+}
+
+/* Imagens em miniatura */
+.card img {
+    width: 100px; /* Define o tamanho da miniatura */
+    height: auto;
+    display: block;
+    margin: 0 auto;
+  }
+
+/* Botões de navegação */
+.nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    border: none;
+    font-size: 12px;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    z-index: 1001;
+  }
+  
+  .nav-btn:hover {
+    background-color: rgba(0, 0, 0, 0.9);
+  }
+  
+  .prev-btn {
+    left: 10px;
+  }
+  
+  .next-btn {
+    right: 10px;
+  }
+  
+  /* Animações para o modal */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  
+  @keyframes fadeOut {
+    from {
+      opacity: 1;
+      transform: scale(1);
+    }
+    to {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+  }
+  
+   
+  #load-more-btn {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #ff6600;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  #load-more-btn:hover {
+    background-color: #cc5200;
+  }
+
+  /* Ícones de Jutsu */
+.modal-details ul li img {
+  width: 20px;
+  height: 20px;
+  vertical-align: middle;
+  margin-right: 1px;
+}
+
+.decks-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.deck {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 10px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.deck img {
+  width: 100px;
+  height: auto;
+  margin-bottom: 10px;
+}
+
+#deck-details {
+  margin-top: 20px;
+  text-align: left;
+}
+
+/* Estilos para o modal de seleção de cards */
+/* Modal escondido */
+.hidden {
+  display: none !important; /* Força o display: none */
+}
+/* Modal visível apenas quando a classe .hidden não está presente */
+#select-card-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: none; /* Garante que o modal fique escondido por padrão */
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+#select-card-modal:not(.hidden) {
+  display: flex; /* Mostra o modal apenas quando a classe .hidden é removida */
+}
+
+#select-card-content {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 500px;
+  width: 100%;
+  text-align: center;
+}
+
+#cards-list-select {
+  list-style-type: none;
+  padding: 0;
+}
+
+/* Estilo dos itens na lista *//* Contêiner com rolagem */
+#cards-list-select li {
+  margin: 10px 0;
+  padding: 5px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#cards-list-select li:hover {
+  background-color: #eee;
+}
+
+/* Contêiner com rolagem */
+.card-scroll-container {
+  max-height: 400px; /* Altura máxima do contêiner */
+  overflow-y: auto; /* Adiciona rolagem vertical */
+  border: 1px solid #ddd; /* Adiciona borda para separação */
+  padding: 10px;
+  background-color: #fff; /* Fundo branco */
+  border-radius: 8px;
+}
+
+/* Painel lateral */
+#card-selection-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 400px;
+  height: 100%;
+  background: #fff;
+  border-left: 1px solid #ddd;
+  padding: 20px;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  overflow-y: auto; /* Adiciona rolagem vertical */
+  transition: transform 0.3s ease; /* Animação ao abrir/fechar */
+  transform: translateX(100%); /* Esconde o painel inicialmente */
+}
+
+/* Exibir o painel */
+#card-selection-panel.hidden {
+  transform: translateX(100%);
+}
+
+#card-selection-panel:not(.hidden) {
+  transform: translateX(0);
+}
+
+/* Lista de cards no painel */
+.card-scroll-container {
+  max-height: calc(100% - 80px); /* Ajusta a altura para não sobrepor o botão */
+  overflow-y: auto;
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px;
+  background-color: #f9f9f9;
+}
+
+/* Estilo da lista no painel */
+#cards-list-panel {
+  list-style-type: none; /* Remove os marcadores padrão */
+  padding: 0;
+  margin: 0;
+}
+#cards-list-panel li {
+  display: flex; /* Alinha o conteúdo em linha */
+  align-items: center; /* Centraliza verticalmente */
+  justify-content: space-between; /* Espaço entre o nome e o botão/ícone */
+  margin: 10px 0;
+  padding: 10px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  cursor: pointer;
+}
+#cards-list-panel li:hover {
+  transform: scale(1.02); /* Leve aumento ao passar o mouse */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  background-color: #f8f8f8;
+}
+
+#cards-list-panel li span {
+  font-size: 14px;
+  color: #333;
+  font-weight: bold;
+}
+
+#cards-list-panel li button {
+  padding: 5px 10px;
+  font-size: 12px;
+  color: #fff;
+  background-color: #ff6600;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+#cards-list-panel li button:hover {
+  background-color: #cc5200;
+}
+/* Estilo da lista de cards no deck */
+#deck-cards-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Ajusta automaticamente o número de colunas */
+  gap: 10px;
+  list-style-type: none; /* Remove os marcadores padrão */
+  padding: 0;
+  margin: 0;
+}
+
+#deck-cards-list li {
+  display: flex; /* Alinha o conteúdo em linha */
+  flex-direction: column; /* Alinha os elementos verticalmente */
+  align-items: center; /* Centraliza verticalmente */
+  justify-content: center; /*space-between;  Espaço entre o nome e os detalhes */
+  margin: 10px 0;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: center; /* Centraliza o texto */
+  cursor: default;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+#deck-cards-list li span {
+  font-size: 14px;
+  font-weight: bold;
+  color: #555;
+  margin-bottom: 1px; /* Espaço entre o texto e o botão */
+}
+
+#deck-cards-list li:hover {
+  transform: scale(1.05); /* Leve aumento ao passar o mouse */
+  background-color: #f0f0f0;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Ícones ou botões na lista de cards */
+#deck-cards-list li button {
+  padding: 5px 10px;
+  font-size: 12px;
+  background-color: #cc5200;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+#deck-cards-list li button:hover {
+  background-color: #ff1100;
+}

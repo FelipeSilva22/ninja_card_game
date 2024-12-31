@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Combate - Naruto TCG</title>
+  <link rel="stylesheet" href="style-combate.css">
+</head>
+<body>
+  <div class="container">
+    <!-- Área da IA -->
+    <div id="ia-area" class="battle-area">
+      <div class="deck-and-hand-container">
+        <!-- Slot do deck da IA -->
+        <div id="ia-deck-slot" class="deck-slot">
+          <h3>Deck da IA</h3>
+          <div class="deck-miniature">
+            <img src="imagens/deck_placeholder.png" alt="Deck" id="ia-deck-img">
+          </div>
+        </div>
+        <!-- Área da mão da IA -->
+        <div class="hand-cards">
+          <h3 class="hand-title">Mão da IA</h3>
+          <div id="maoIA" class="hand-content carousel">
+            <div class="carousel-track">
+              <!-- Cards serão renderizados dinamicamente aqui -->
+            </div>
+          </div>
+        </div>
+        <!-- Área dos pergaminhos -->
+        <div id="ia-scrolls" class="scrolls">
+          <h3>Pergaminhos: <span id="ia-scroll-count">5</span></h3>
+        </div>        
+      </div>
+      <div class="leader-and-supports-container">
+        <h2 id="ia-name-display" class="vertical-title">Time IA</h2>        
+        <div id="ia-formation-field" class="field">
+          <div class="row row-1">
+            <div id="ia-supports" class="supports">
+              <div id="supIAa" class="field-slot" data-slot="support1">
+                <span class="slot-label support-label">Suporte 1</span>
+              </div>
+              <div id="supIAb" class="field-slot" data-slot="support2">
+                <span class="slot-label support-label">Suporte 2</span>
+              </div>
+              <div id="supIAc" class="field-slot" data-slot="support3">
+                <span class="slot-label support-label">Suporte 3</span>
+              </div>
+            </div>
+            <div id="ia-discard-pile" class="discard-pile">
+              <h3>Descarte IA</h3>
+              <div id="ia-discard-slot" class="discard-slot">
+                <!-- Cards na pilha de descarte -->
+              </div>              
+            </div>
+          </div>
+          <div class="row row-2">
+            <div id="ia-attributes-container" class="attributes-container">
+              <div class="attributes">
+                <h4 class="title-attributes">Atributos</h4>
+                <p><span>HP </span><strong id="ia-attr-hp">0</strong></p>
+                <p><span>Chakra </span><strong id="ia-attr-chakra">0</strong></p>
+                <p><span>Taijutsu </span><strong id="ia-attr-taijutsu">0</strong></p>
+                <p><span>Genjutsu </span> <strong id="ia-attr-genjutsu">0</strong></p>
+                <p><span>Ninjutsu </span> <strong id="ia-attr-ninjutsu">0</strong></p>
+                <p><span>Defesa </span> <strong id="ia-attr-defesa">0</strong></p>
+                <p><span>Velocidade </span> <strong id="ia-attr-velocidade">0</strong></p>
+              </div>
+              <div class="chakra-group">
+                <h4 class="title-attributes">Chakra Elemental</h4>
+                <p><strong id="ia-attr-chakraFogo">0</strong> Chakra<strong class="fire-label"> Fogo</strong></span></p>
+                <p><strong id="ia-attr-chakraVento">0</strong> Chakra<strong class="wind-label"> Vento</strong></p>
+                <p><strong id="ia-attr-chakraRaio">0</strong> Chakra<strong class="light-label"> Raio</strong></p>
+                <p><strong id="ia-attr-chakraTerra">0</strong> Chakra<strong class="earth-label"> Terra</strong></p>
+                <p><strong id="ia-attr-chakraAgua">0</strong> Chakra<strong class="water-label"> Água</strong></p>
+                <p><strong id="ia-elementosTotal">0</strong> Total Naturezas</p>
+              </div>
+            </div>
+            <div id="ia-leader-slot" class="field-slot" data-slot="leader" data-ocupado="false">
+              <span class="slot-label leader-label">Líder</span>
+            </div>
+            <div id="ia-action-dropdowns" class="dropdowns-container">
+              <!--<h4>Ações</h4>-->
+              <div class="dropdown-group">
+                <label for="ia-offensive-action">Ação Ofensiva:</label>
+                <select id="ia-offensive-action">
+                  <option value="">Escolha uma ação</option>
+                </select>
+              </div>
+              <div class="dropdown-group">
+                <label for="ia-defensive-action">Ação Defensiva:</label>
+                <select id="ia-defensive-action">
+                  <option value="">Escolha uma ação</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>   
+      </div>
+    </div>
+    <!-- Área dos Modals -->
+    <div id="discardModal" class="modal">
+      <span class="close" id="closeDiscardModal">&times;</span>
+      <div class="modal-content">
+          <h3 id="modal-title"></h3> <!-- Título do modal -->
+          <div class="card-gallery">
+              <button id="prevCard" class="nav-button">&lt;</button>
+              <div id="cardDisplay" class="card-display">
+                  <!-- Card atual exibido -->
+              </div>
+              <button id="nextCard" class="nav-button">&gt;</button>
+          </div>
+      </div>
+    </div> 
+    <div id="cardDetailModal" class="modal">
+      <span class="close" id="closeCardDetailModal">&times;</span>
+      <div class="modal-content">
+          <h3 id="card-name"></h3> <!-- Nome do card -->
+          <div class="card-detail">
+              <div class="card-image">
+                  <img id="card-image" src="" alt="Card Image">
+              </div>
+              <div class="card-attributes">
+                  <p>Chakra Fogo: <span id="chakra-fogo"></span></p>
+                  <p>Chakra Vento: <span id="chakra-vento"></span></p>
+                  <p>Chakra Raio: <span id="chakra-raio"></span></p>
+                  <p>Chakra Terra: <span id="chakra-terra"></span></p>
+                  <p>Chakra Água: <span id="chakra-agua"></span></p>
+                  <p>Total elementos: <span id="soma-chakras"></span></p>
+              </div>
+          </div>
+      </div>
+    </div>
+    <!-- Área do Jogador -->
+    <div id="player-area" class="battle-area">
+      <div class="leader-and-supports-container">
+        <h2 id="player-name-display" class="vertical-title">Jogador: </h2>
+        <div id="formation-field" class="field">
+          <div class="row row-1">
+            <div id="player-attributes-container" class="attributes-container">
+              <div class="attributes">
+                <h4 class="title-attributes">Atributos</h4>
+                <p><span>HP </span><strong id="attr-hp">0</strong></p>
+                <p><span>Chakra </span><strong id="attr-chakra">0</strong></p>
+                <p><span>Taijutsu </span><strong id="attr-taijutsu">0</strong></p>                
+                <p><span>Genjutsu </span><strong id="attr-genjutsu">0</strong></p>
+                <p><span>Ninjutsu </span><strong id="attr-ninjutsu">0</strong></p>
+                <p><span>Defesa </span><strong id="attr-defesa">0</strong></p>
+                <p><span>Velocidade </span><strong id="attr-velocidade">0</strong></p>
+              </div>
+              <div class="chakra-group">
+                <h4 class="title-attributes">Chakra Elemental</h4>
+                <p><strong id="attr-chakraFogo">0</strong> Chakra<strong class="fire-label"> Fogo</strong></p>
+                <p><strong id="attr-chakraVento">0</strong> Chakra<strong class="wind-label"> Vento</strong></p>
+                <p><strong id="attr-chakraRaio">0</strong> Chakra<strong class="light-label"> Raio</strong></p>
+                <p><strong id="attr-chakraTerra">0</strong> Chakra<strong class="earth-label"> Terra</strong></p>
+                <p><strong id="attr-chakraAgua">0</strong> Chakra<strong class="water-label"> Água</strong></p>
+                <p><strong id="elementosTotal">0</strong> Total Naturezas</p>
+              </div>
+            </div>
+            <div id="player-leader-slot" class="field-slot" data-slot="leader" data-ocupado="false">
+              <span class="slot-label leader-label">Líder</span>
+            </div>
+            <div id="action-dropdowns" class="dropdowns-container">
+              <!--<h4>Ações</h4>-->
+              <div class="dropdown-group">
+                <label for="j1-offensive-action">Ação Ofensiva:</label>
+                <select id="j1-offensive-action">
+                  <option value="">Escolha uma ação</option>
+                  <!--<option value="ataque">Ataque Básico</option>
+                  <option value="genjutsu">Genjutsu</option>-->
+                </select>
+              </div>
+              <div class="dropdown-group">
+                <label for="j1-defensive-action">Ação Defensiva:</label>
+                <select id="j1-defensive-action">
+                  <option value="">Escolha uma ação</option>
+                  <!--<option value="bloquear">Bloquear</option>
+                  <option value="esquiva">Esquiva</option>-->
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="row row-2">
+            <div id="player-supports" class="supports">
+              <div id="supJ1a" class="field-slot" data-slot="support1">
+                <span class="slot-label support-label">Suporte 1</span>
+              </div>
+              <div id="supJ1b" class="field-slot" data-slot="support2">
+                <span class="slot-label support-label">Suporte 2</span>
+              </div>
+              <div id="supJ1c" class="field-slot" data-slot="support3">
+                <span class="slot-label support-label">Suporte 3</span>
+              </div>
+            </div>
+            <div id="player-discard-pile" class="discard-pile">
+              <h3>Descarte J1</h3>
+              <div id="player-discard-slot" class="discard-slot">
+                <!-- Cards na pilha de descarte -->
+              </div>
+            </div>
+          </div> 
+        </div>  
+      </div>
+      <div class="hand-and-deck-container">
+        <!-- Área dos pergaminhos -->
+        <div id="player-scrolls" class="scrolls">
+          <h3>Pergaminhos: <span id="player-scroll-count">5</span></h3>
+        </div>
+        <!-- Mão do jogador para formação -->
+        <div class="hand-cards">
+          <h3 id="player-name-hand" class="hand-title">Mão </h3>
+          <div id="maoJ1" class="hand-content carousel">
+            <div class="carousel-track">
+              <!-- Cards serão renderizados dinamicamente aqui -->
+            </div>
+          </div>          
+        </div>
+        <!-- Slot do deck -->
+        <div id="player-deck-slot" class="deck-slot">
+          <h3 id="player-name-deck">Deck J1</h3>
+          <div class="deck-miniature">
+            <img src="imagens/deck_placeholder.png" alt="Deck" id="player-deck-img">
+          </div>
+        </div>
+      </div>       
+    </div>
+    <div class="phase-container">
+      <!--<img src="imagens/pergaminho.png" alt="Fundo do pergaminho" class="background-image">-->
+      <div class="turno-container">
+        <div id="btn-inicio" class="turno-botao" onclick="handleClick('inicio')">Iniciar Vila</div>
+        <div id="btn-formacao" class="turno-botao" onclick="handleClick('formacao')">Finalizar Formação</div>
+        <div id="btn-compra" class="turno-botao" onclick="handleClick('compra')">Invocar Recurso</div>
+        <div id="btn-preparacao" class="turno-botao" onclick="handleClick('preparacao')">Encerrar Preparação</div>
+        <div id="btn-combate" class="turno-botao" onclick="handleClick('combate')">Iniciar Combate</div>
+        <div id="btn-novoLider" class="turno-botao" onclick="handleClick('novoLider')">Novo Lider</div>
+      </div>      
+    </div>
+  </div>
+  <div class="backdrop" style="display: none;"></div>
+  <footer>
+    <button onclick="voltarConfigJogo()">Voltar as Config.</button>
+    <p>Desenvolvido por [Felipe Josuel]</p>
+  </footer>
+  <script src="dano.js"></script>
+  <script src="ia.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>

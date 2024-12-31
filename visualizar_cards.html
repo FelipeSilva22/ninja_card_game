@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Visualizar Cards</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Catalogo de Cards</h1>
+    <!-- Controles de Filtro -->
+    <div id="filter-container">
+      <label for="filter-type">Filtrar por Tipo:</label>
+      <select id="filter-type" onchange="applyFilters()">
+        <option value="all">Todos</option>
+        <option value="Ninja">Ninja</option>
+        <option value="Chakra">Chakra</option>
+        <option value="Tool">Ferramenta</option>
+      </select>
+
+      <label for="filter-natureza">Filtrar por Natureza:</label>
+      <select id="filter-natureza" onchange="applyFilters()">
+        <option value="all">Todas</option>
+        <option value="Fogo">Fogo</option>
+        <option value="Vento">Vento</option>
+        <option value="Raio">Raio</option>
+        <option value="Terra">Terra</option>
+        <option value="Agua">Agua</option>
+        <option value="Yin">Yin</option>
+        <option value="Yang">Yang</option>
+      </select>
+
+      <label for="filter-stage">Filtrar por Estágio:</label>
+      <select id="filter-stage" onchange="applyFilters()">
+        <option value="all">Todos</option>
+        <option value="1">Estágio 1</option>
+        <option value="2">Estágio 2</option>
+        <option value="3">Estágio 3</option>
+      </select>
+
+      <button id="clear-filters" onclick="clearFilters()">Limpar Filtros</button>
+
+    </div>
+
+    <div id="cards-container" class="cards-grid">
+      <!-- Os cards serão exibidos aqui -->
+    </div>
+
+    <div id="load-more-container" style="text-align: center; margin-top: 20px;">
+      <button id="load-more-btn" onclick="mostrarMaisCards()">Mostrar Mais</button>
+    </div>
+
+    <!-- Modal para exibir detalhes do card -->
+    <div id="card-modal" class="modal" onclick="fecharModalFundo(event)">
+      <div class="modal-content">
+        <span class="close-btn" onclick="closeModal()">&times;</span>
+        <button class="nav-btn prev-btn" onclick="navigateCard(-1)">&#9664; Anterior</button>
+        <div id="modal-layout" class="modal-layout">
+          <div id="modal-image">
+            <!-- A imagem será carregada aqui -->
+          </div>
+          <div id="modal-details">
+            <!-- Os detalhes do card serão carregados aqui -->
+          </div>
+          <button class="nav-btn next-btn" onclick="navigateCard(1)">Próximo &#9654;</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <button onclick="window.location.href='index.html'">Voltar ao Menu</button>
+    <p>Desenvolvido por [Felipe Josuel]</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

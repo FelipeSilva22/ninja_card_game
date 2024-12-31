@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Editar Baralho</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Página de Edição de Baralho -->
+  <div class="container">
+    <h1>Editar Baralho</h1>
+    <div id="decks-container" class="decks-grid">
+      <!-- Miniaturas dos baralhos serão carregadas dinamicamente -->
+    </div>
+
+    <div id="deck-details" class="hidden">
+      <h2 id="deck-name">Nome do Baralho</h2>
+      <ul id="deck-cards-list">
+        <!-- Lista de cards do baralho será gerada aqui -->
+      </ul>
+      <!-- Botão para abrir a seleção de cards -->
+      <button id="add-card-btn" onclick="mostrarPainelSelecao()">Adicionar Card</button>
+      <button id="save-deck-btn" onclick="salvarBaralho()">Salvar Baralho</button>
+    </div>
+
+    <!-- Modal ou área para selecionar cards -->
+    <div id="card-selection-panel" class="hidden">  
+      <h2>Selecionar um Card</h2>
+      <div class="card-scroll-container">
+        <ul id="cards-list-panel">
+          <!-- Lista de cards será carregada aqui -->
+        </ul>
+      </div>
+      <button onclick="fecharPainelSelecao()">Fechar</button>
+    </div>
+  </div>
+
+  <footer>
+    <!-- Botão de Voltar -->
+    <button onclick="voltarPaginaInicial()">Voltar ao Menu</button>
+    <p>Desenvolvido por [Felipe Josuel]</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
