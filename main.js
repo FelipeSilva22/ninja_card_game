@@ -86,7 +86,8 @@ function iniciarCampoDeBatalha() {
   estadoAtual = "formacao";
   console.log("Estado do jogo ajustado para:", estadoAtual);
   atualizarBotoes();
-  dragAndDrop();
+  //dragAndDrop();
+  initializeDragAndDrop();
 }
 function embaralharBaralho(baralho) {
   if (!Array.isArray(baralho) || baralho.length === 0) {
@@ -321,6 +322,14 @@ function renderizarMaoIA(maoIA) {
 }
 
 /*Inicio DragandDrop*/
+function initializeDragAndDrop() {
+  if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
+    initializeTouchEvents();
+  } else {
+    dragAndDrop();
+  }
+}
+
 function dragAndDrop() {
   // Seleciona os cards na mão do jogador
   const cards = document.querySelectorAll('.hand-card, .field-card');
@@ -414,6 +423,53 @@ function handleDrop(e) {
   // Chama o processamento com as variáveis
   processarDrop(card, slotOrigem, cardDestino, slotDestino);
 }
+function initializeTouchEvents() {
+  const cards = document.querySelectorAll('.hand-card, .field-card');
+  const slots = document.querySelectorAll('.field-slot');
+  let cardBeingDragged = null;
+
+  // Configurar eventos touchstart, touchmove e touchend
+  cards.forEach(card => {
+    card.addEventListener('touchstart', (e) => {
+      cardBeingDragged = card;
+      card.classList.add('dragging');
+      // Salva a posição inicial
+      const touch = e.touches[0];
+      card.style.position = 'absolute';
+      card.style.left = `${touch.clientX - card.offsetWidth / 2}px`;
+      card.style.top = `${touch.clientY - card.offsetHeight / 2}px`;
+    });
+
+    card.addEventListener('touchmove', (e) => {
+      e.preventDefault();
+      if (cardBeingDragged) {
+        const touch = e.touches[0];
+        cardBeingDragged.style.left = `${touch.clientX - cardBeingDragged.offsetWidth / 2}px`;
+        cardBeingDragged.style.top = `${touch.clientY - cardBeingDragged.offsetHeight / 2}px`;
+      }
+    });
+
+    card.addEventListener('touchend', (e) => {
+      if (cardBeingDragged) {
+        const touch = e.changedTouches[0];
+        cardBeingDragged.classList.remove('dragging');
+        cardBeingDragged.style.position = 'initial';
+
+        const targetSlot = document.elementFromPoint(touch.clientX, touch.clientY);
+
+        // Verifica se o alvo é um slot válido
+        if (targetSlot && targetSlot.classList.contains('field-slot')) {
+          processarDrop(cardBeingDragged, cardBeingDragged.parentElement, targetSlot.querySelector('img'), targetSlot);
+        }
+
+        cardBeingDragged = null;
+      }
+    });
+  });
+
+  console.log("Touch drag and drop initialized.");
+}
+
 function processarDrop(cardOrigem, slotOrigem, cardDestino, slotDestino) {
   console.log(`Processando drop: cardOrigem=${cardOrigem.id}, slotOrigem=${slotOrigem.id}, cardDestino=${cardDestino?.id || "null"}, slotDestino=${slotDestino.id}`);
   // Validação: Slot de origem é igual ao slot de destino
@@ -915,10 +971,6 @@ function encerrarFormacao() {
       allCardsInField.forEach(card => {
         card.setAttribute('data-bloq-evo', '0'); // Bloqueia a evolução inicialmente
       });
-
-      // Desabilitar Drag and Drop
-      //desabilitarDragAndDrop();
-      //console.log("Drag and Drop desabilitado 2x")
       // Inicia a escolha do time pela IA
       escolherTimeIA();
 
@@ -1045,7 +1097,8 @@ function turnoDePreparacao() {
   incrementarBloqEvo(); // Incrementa bloqEvo
   atualizarBotoes(); // Atualiza os botões novamente
   configurarEventosDeDuploClique();//Ativa ver cards da IA
-  dragAndDrop(); // Ativa os eventos de drag-and-drop para preparação
+  //dragAndDrop(); // Ativa os eventos de drag-and-drop para preparação
+  initializeDragAndDrop();
 }
 function aplicarEfeito(cardDestino, cardOrigem) {
   const efeito = cardOrigem.dataset.efeito;
@@ -1392,7 +1445,8 @@ function escolherNovoLiderJ1() {
   alert("Promova um suporte para ser o lider");
   atualizarBotoes(); // Atualiza os botões novamente
   configurarEventosDeDuploClique();//Ativa ver cards da IA
-  dragAndDrop(); // Ativa os eventos de drag-and-drop para preparação
+  //dragAndDrop(); // Ativa os eventos de drag-and-drop para preparação
+  initializeDragAndDrop();
 }
 function declararVitoriaIA() {
   console.log("IA venceu!");
