@@ -91,29 +91,45 @@ function processarAcoes(atacante, defensor, acaoOfensiva, acaoDefensiva) {
   const velocidadeAtacante = parseInt(atacante.dataset.velocidade) || 0;
   let velocidadeDefensor = parseInt(defensor.dataset.velocidade) || 0;
 
+  // Verificar se o atacante está marcado com Paralyze
+  if (atacante.dataset.paralyze === "true") {
+    console.warn(`${atacante.dataset.nome} está paralisado!`);
+    acaoOfensiva = { tipo: "paralyze", value: "paralyze", text: `Paralyze (Sem ataque)` };
+    acaoDefensiva = { tipo: "opcaoBasica", value: "defesa", text: `Proteger-se (${atacante.dataset.defesa || 0})` };
+  }
   // Função auxiliar para consumir chakra
-  function consumirChakra(ninja, custoChakra) {
+  function consumirChakra(ninja, custoChakra, tipoAcao) {
       const chakraAtual = parseInt(ninja.dataset.chakra) || 0;
       if (chakraAtual >= custoChakra) {
           ninja.dataset.chakra = chakraAtual - custoChakra;
           console.log(`${ninja.dataset.nome} usou ${custoChakra} de chakra. Chakra restante: ${ninja.dataset.chakra}`);
+          return true;
       } else {
-          console.warn(`${ninja.dataset.nome} não tem chakra suficiente!`);
+          console.warn(`${ninja.dataset.nome} não tem chakra suficiente! Seu chakra foi zerado.`);
+          ninja.dataset.chakra = 0;
+          if (tipoAcao === "ofensiva") {
+              console.warn(`Ação ofensiva de ${ninja.dataset.nome} alterada para ataque simples.`);
+              acaoOfensiva = { tipo: "opcaoBasica", value: "taijutsu", text: `Ataque Simples (${ninja.dataset.taijutsu || 0})` };
+          } else if (tipoAcao === "defensiva") {
+              console.warn(`Ação defensiva de ${ninja.dataset.nome} alterada para proteger-se.`);
+              acaoDefensiva = { tipo: "opcaoBasica", value: "defesa", text: `Proteger-se (${ninja.dataset.defesa || 0})` };
+          }
+          return false;
       }
   }
 
-  // Consumir chakra
-  if (acaoOfensiva.tipo === "jutsu") consumirChakra(atacante, acaoOfensiva.custoChakra || 0);
-  if (acaoDefensiva.tipo === "jutsu") consumirChakra(defensor, acaoDefensiva.custoChakra || 0);
+  // Consumir chakra para as ações
+  if (acaoOfensiva.tipo === "jutsu") consumirChakra(atacante, acaoOfensiva.custoChakra || 0, "ofensiva");
+  if (acaoDefensiva.tipo === "jutsu") consumirChakra(defensor, acaoDefensiva.custoChakra || 0, "defensiva");
 
   // Verificar se a ação defensiva é uma evasiva
   let tentativaEvasiva = false;
 
   if (acaoDefensiva.tipo === "jutsu" && acaoDefensiva.categoria === "evasiva") {
-      velocidadeDefensor = velocidadeDefensor + (acaoDefensiva.powerJutsu || 0);
-      console.log(`${defensor.dataset.nome} tentou usar jutsu evasivo. ${velocidadeDefensor}`);
+      velocidadeDefensor += (acaoDefensiva.powerJutsu || 0);
+      console.log(`${defensor.dataset.nome} tentou usar jutsu evasivo. Velocidade ajustada: ${velocidadeDefensor}`);
       tentativaEvasiva = true;
-  } else if (acaoDefensiva.nome === "velocidade" || acaoDefensiva.nome === "velocidadeIA") {
+  } else if (acaoDefensiva.value === "velocidade") {
       console.log(`${defensor.dataset.nome} tentou usar ação básica de evasiva.`);
       tentativaEvasiva = true;
   }
@@ -125,15 +141,15 @@ function processarAcoes(atacante, defensor, acaoOfensiva, acaoDefensiva) {
           console.log(`${defensor.dataset.nome} conseguiu desviar!`);
           // Atualizar os atributos do atacante e do defensor
           if (atacante.closest("#player-area")) {
-            atualizarAtributosLider(atacante);
+              atualizarAtributosLider(atacante);
           } else if (atacante.closest("#ia-area")) {
-            atualizarAtributosLiderIA(atacante);
+              atualizarAtributosLiderIA(atacante);
           }
 
           if (defensor.closest("#player-area")) {
-            atualizarAtributosLider(defensor);
+              atualizarAtributosLider(defensor);
           } else if (defensor.closest("#ia-area")) {
-            atualizarAtributosLiderIA(defensor);
+              atualizarAtributosLiderIA(defensor);
           }
           return; // Dano é zerado
       } else {
@@ -141,9 +157,14 @@ function processarAcoes(atacante, defensor, acaoOfensiva, acaoDefensiva) {
       }
   }
 
-  // Calcular dano
-  calcularDano(atacante, defensor, acaoOfensiva, acaoDefensiva);
+  // Calcular dano, ignorar dano se o atacante está paralisado
+  if (acaoOfensiva.value !== "paralyze") {
+      calcularDano(atacante, defensor, acaoOfensiva, acaoDefensiva);
+  } else {
+      console.log(`${atacante.dataset.nome} não pode atacar devido à Paralyze.`);
+  }
 }
+
 
 function calcularDano(atacante, defensor, acaoOfensiva, acaoDefensiva) {
   let poderAtaque = 0;

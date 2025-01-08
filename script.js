@@ -428,7 +428,8 @@ function carregarBaralhosParaSelecao() {
 function selecionarBaralhoJogador(deck) {
   jogadorBaralho = deck;
   alert(`Você escolheu o baralho: ${deck.name}`);
-
+  // Salva a imagem e as informações do baralho do jogador
+  localStorage.setItem('jogadorDeckImage', deck.image); // Salva a imagem do deck do jogador
   // IA seleciona um baralho aleatório (excluindo o do jogador)
   selecionarBaralhoIA();
 
@@ -442,6 +443,8 @@ function selecionarBaralhoIA() {
   iaBaralho = baralhosDisponiveis[Math.floor(Math.random() * baralhosDisponiveis.length)];
   document.getElementById('ia-deck-selection').classList.remove('hidden');
   document.getElementById('ia-deck-selection').innerText = `IA escolheu o baralho: ${iaBaralho.name}`;
+  // Salva a imagem e as informações do baralho da IA
+  localStorage.setItem('iaDeckImage', iaBaralho.image); // Salva a imagem do deck da IA
 }
 function iniciarCombate() {
   if (!jogadorNome || !jogadorBaralho || !iaBaralho) {
@@ -453,6 +456,7 @@ function iniciarCombate() {
   localStorage.setItem('jogadorNome', jogadorNome);
   localStorage.setItem('jogadorBaralho', JSON.stringify(jogadorBaralho));
   localStorage.setItem('iaBaralho', JSON.stringify(iaBaralho));
+  
 
   // Redirecionar para a página de combate
   window.location.href = 'tela_combate.html';

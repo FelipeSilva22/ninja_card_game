@@ -18,7 +18,8 @@ function escolherTimeIA() {
 
     // Escolher o líder com a maior soma dos atributos relevantes
     let iaLeader = iaNinjasEstagio1.reduce((melhor, atual) => 
-        calcularSomaAtributos(atual) > calcularSomaAtributos(melhor) ? atual : melhor);
+        calcularSomaAtributosCard(atual) > calcularSomaAtributosCard(melhor) ? atual : melhor
+    );
 
     // Remover o líder da lista
     iaNinjasEstagio1 = iaNinjasEstagio1.filter(card => card.idCard !== iaLeader.idCard);
@@ -49,6 +50,9 @@ function escolherTimeIA() {
         chakraRaio: iaLeader.chakraRaio || 0,
         chakraTerra: iaLeader.chakraTerra || 0,
         chakraAgua: iaLeader.chakraAgua || 0,
+        habilidadeSuporte: iaLeader.habilidadeSuporte || null,
+        custoHabSup: iaLeader.custoHabSup || 0,
+        probabilidade: iaLeader.probabilidade || 0,
         bloqEvo: 0,
         jutsus: JSON.stringify(iaLeader.jutsus || [])
     });
@@ -91,6 +95,9 @@ function escolherTimeIA() {
                 chakraRaio: supportCard.chakraRaio || 0,
                 chakraTerra: supportCard.chakraTerra || 0,
                 chakraAgua: supportCard.chakraAgua || 0,
+                habilidadeSuporte: supportCard.habilidadeSuporte || null,
+                custoHabSup: supportCard.custoHabSup || 0,
+                probabilidade: supportCard.probabilidade || 0,
                 bloqEvo: 0,
                 jutsus: JSON.stringify(supportCard.jutsus || [])
             });
@@ -106,14 +113,29 @@ function escolherTimeIA() {
 
     console.log("A IA concluiu sua formação!");
     estadoAtual = "compra";
+    atualizarBotoes();
     turnoDeCompraIA(); // Avança para o próximo estágio
 }
+
+// Nova função para calcular a soma dos atributos de um card
+function calcularSomaAtributosCard(card) {
+    return (
+        (card.hp || 0) +
+        (card.chakra || 0) +
+        (card.taijutsu || 0) +
+        (card.genjutsu || 0) +
+        (card.ninjutsu || 0) +
+        (card.defesa || 0) +
+        (card.velocidade || 0)
+    );
+}
+
 //-------
 function acaoPreparacaoIA() {
     console.log("Iniciando ações de preparação da IA...");
     //alert("Iniciando ações de preparação da IA");
   
-    const maoIA = document.querySelectorAll('#maoIA img');
+    const maoIA = document.querySelectorAll('.hand-card-ia');
     const slotsIA = document.querySelectorAll('#ia-formation-field .field-slot');
     let iaChakraUsado = false; // Controla se a IA já usou um card de Chakra neste turno
   
@@ -477,15 +499,16 @@ function escolherAcoesIA() {
     // Escolher ação defensiva
     const hpAtual = parseInt(liderIA.dataset.hp, 10) || 0;
     const hpInicial = parseInt(liderIA.dataset.hpInicial, 10) || 0;
-    const velocidadeIA = parseInt(liderIA.dataset.velocidade, 10) || 0;
-    const velocidadeJ1 = parseInt(liderJ1.dataset.velocidade, 10) || 0;
+    const defesaIA = parseInt(liderIA.dataset.defesa, 10) || 0;
+    const taiJ1 = parseInt(liderJ1.dataset.taijutsu, 10) || 0;
+    const ninJ1 = parseInt(liderJ1.dataset.ninjutsu, 10) || 0;
 
     let melhorDefensivaIA;
 
     // Caso 1: HP crítico e vantagem de velocidade
     //if (hpAtual <= hpInicial * 0.2 && (velocidadeIA - velocidadeJ1 > 10)) {
     // Caso 1: HP crítico
-    if (hpAtual <= hpInicial * 0.2) {
+    if (hpAtual <= hpInicial * 0.2 && (defesaIA < taiJ1 || defesaIA < ninJ1)) {
         melhorDefensivaIA = { value: "velocidade", text: "Desviar" };
         console.log(`HP crítico: ${hpAtual}. Velocidade suficiente para desviar. Ação defensiva escolhida pela IA: ${melhorDefensivaIA.text}`);
 
@@ -602,13 +625,13 @@ function escolherNovoLiderIA() {
 }
   
 function calcularSomaAtributos(ninja) {
-    return (
-      (ninja.hp || 0) +
-      (ninja.chakra || 0) +
-      (ninja.taijutsu || 0) +
-      (ninja.genjutsu || 0) +
-      (ninja.ninjutsu || 0) +
-      (ninja.defesa || 0) +
-      (ninja.velocidade || 0)
-    );
+    const hp = parseInt(ninja.dataset.hp, 10) || 0;
+    const chakra = parseInt(ninja.dataset.chakra, 10) || 0;
+    const taijutsu = parseInt(ninja.dataset.taijutsu, 10) || 0;
+    const genjutsu = parseInt(ninja.dataset.genjutsu, 10) || 0;
+    const ninjutsu = parseInt(ninja.dataset.ninjutsu, 10) || 0;
+    const defesa = parseInt(ninja.dataset.defesa, 10) || 0;
+    const velocidade = parseInt(ninja.dataset.velocidade, 10) || 0;
+
+    return hp + chakra + taijutsu + genjutsu + ninjutsu + defesa + velocidade;
 }

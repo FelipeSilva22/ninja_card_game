@@ -1,18 +1,19 @@
 //-----Controle de turnos e fluxo do jogo
 let jogadorPergaminhos = 5;
 let iaPergaminhos = 5;
-let estadoAtual = "inicio"; // Possíveis estados: inicio, formacao, compra, preparacao, acao
+const fases = ["inicio", "formacao", "compra", "preparacao", "suporte", "combate", "novoLider"];
+let estadoAtual = "inicio";
 let jogadorMao = []; // Cards na mão do jogador
 let jogadorTime = []; // Cards no campo do jogador
 let iaMao = []; // Cards na mão da IA
 let iaTime = []; // Cards no campo da IA
 let chakraUsado = false;//Controlar uso de chakra por turno
-let dragAndDropFormacaoAtivo = false;
 let turnosSemLider = 0; //Controla o empate
 const arrayDescarteIA = [];
 const arrayDescartePlayer = [];
 let currentCardIndex = 0;
 let currentDiscardPile = arrayDescartePlayer;
+let suporteIAExecutado = false; // Variável de controle global
 
 function iniciarCampoDeBatalha() { 
   //console.log("Iniciando o campo de batalha...");
@@ -59,12 +60,6 @@ function iniciarCampoDeBatalha() {
   }
 
   // Formar as mãos iniciais
-  //console.log("Formando mãos iniciais...");
-  //console.log("Tipo do baralho do jogador:", typeof jogadorBaralho.cards);
-  //console.log("Tipo do baralho da IA:", typeof iaBaralho.cards);
-  //console.log("É array (jogador)?", Array.isArray(jogadorBaralho.cards));
-  //console.log("É array (IA)?", Array.isArray(iaBaralho.cards));
-
   //formarMaoInicial(jogadorBaralho.cards, jogadorMao);
   //formarMaoInicial(iaBaralho.cards, iaMao);
   formarMaoInicial(jogadorBaralho.cards, jogadorMao, iaBaralho.cards, iaMao);
@@ -81,12 +76,9 @@ function iniciarCampoDeBatalha() {
   renderizarMaoIA(iaMao);
   //console.log("Mãos renderizadas com sucesso.");
 
-  // Configurar drag-and-drop
-  //console.log("Configuração de Drag and Drop...");
   estadoAtual = "formacao";
   console.log("Estado do jogo ajustado para:", estadoAtual);
   atualizarBotoes();
-  //dragAndDrop();
   initializeDragAndDrop();
 }
 function embaralharBaralho(baralho) {
@@ -101,6 +93,7 @@ function embaralharBaralho(baralho) {
   for (let i = baralho.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1)); // Índice aleatório de 0 a i
       [baralho[i], baralho[j]] = [baralho[j], baralho[i]]; // Troca de elementos
+      console.log('Baralho embaralhado.');
   }
 
   //console.log("Baralho após o embaralhamento:", JSON.stringify(baralho));
@@ -131,13 +124,13 @@ function formarMaoInicial(baralhoJogador, maoJogador, baralhoIA, maoIA) {
   let copiaBaralhoIA = [...baralhoIA];
 
   // Loop para formar as mãos até que ambas estejam corretas ou atinja o limite de tentativas
-  while ((!maoJogadorCompleta || !maoIACompleta) && tentativas < 20) {
+  while ((!maoJogadorCompleta || !maoIACompleta) && tentativas < 10) {
       console.log(`Tentativa ${tentativas + 1}:`);
 
       // Processa a mão do Jogador
       if (!maoJogadorCompleta) {
           maoJogador.length = 0; // Limpa a mão anterior
-          maoJogador.push(...copiaBaralhoJogador.splice(0, 5)); // Retira os 5 primeiros cards do baralho
+          maoJogador.push(...copiaBaralhoJogador.splice(0, 10)); // Retira os 5 primeiros cards do baralho
 
           if (!temNinjaEstagio1(maoJogador)) {
               // Devolve os cards ao final do baralho e tenta de novo
@@ -152,7 +145,7 @@ function formarMaoInicial(baralhoJogador, maoJogador, baralhoIA, maoIA) {
       // Processa a mão da IA
       if (!maoIACompleta) {
           maoIA.length = 0; // Limpa a mão anterior
-          maoIA.push(...copiaBaralhoIA.splice(0, 5)); // Retira os 5 primeiros cards do baralho
+          maoIA.push(...copiaBaralhoIA.splice(0, 10)); // Retira os 5 primeiros cards do baralho
 
           if (!temNinjaEstagio1(maoIA)) {
               // Devolve os cards ao final do baralho e tenta de novo
@@ -185,11 +178,6 @@ function formarMaoInicial(baralhoJogador, maoJogador, baralhoIA, maoIA) {
   //console.log("Mão inicial da IA:", maoIA);
   //console.log("Baralho da IA após formação:", baralhoIA);
 }
-function temNinjaEstagio1(mao) {
-  // Verifica se a mão contém pelo menos um Ninja Estágio 1
-  return mao.some(card => card.tipo === "Ninja" && card.estagio === 1);
-}
-//-----Atualizar Mão
 function renderizarMao(mao) {
   const maoContainer = document.getElementById('maoJ1');
   maoContainer.innerHTML = ''; // Limpa a mão antes de renderizar
@@ -236,6 +224,9 @@ function renderizarMao(mao) {
               chakraRaio: card.chakraRaio || 0,
               chakraTerra: card.chakraTerra || 0,
               chakraAgua: card.chakraAgua || 0,
+              habilidadeSuporte: card.habilidadeSuporte || null,
+              custoHabSup: card.custoHabSup || 0,
+              probabilidade: card.probabilidade || 0,
               // Adiciona os jutsus ao dataset como string JSON 
               jutsus: JSON.stringify(card.jutsus || [])
           });
@@ -255,10 +246,29 @@ function renderizarMao(mao) {
       maoContainer.appendChild(cardElement);
   });
 }
+function atualizarImagensMaoIA() {
+  const maoIA = document.getElementById('maoIA');
+  const iaDeckImage = localStorage.getItem('iaDeckImage') || 'imagens/deck_placeholder.png'; // Caminho padrão
 
+  // Altere todas as imagens dos cards da mão da IA para a imagem do deck
+  const cardsNaMao = maoIA.querySelectorAll('img');
+  cardsNaMao.forEach(card => {
+    card.src = iaDeckImage;
+    card.dataset.originalSrc = card.dataset.originalSrc || card.src; // Salva a imagem original do card
+  });
+}
+function restaurarImagemCard(card) {
+  if (card.dataset.originalSrc) {
+    card.src = card.dataset.originalSrc; // Restaura a imagem original
+    delete card.dataset.originalSrc; // Remove o dado temporário
+  }
+}
 function renderizarMaoIA(maoIA) {
   const maoContainerIA = document.getElementById('maoIA');
   maoContainerIA.innerHTML = ''; // Limpa a mão antes de renderizar os cards
+
+  // Recupera a imagem do deck da IA
+  const iaDeckImage = localStorage.getItem('iaDeckImage') || 'imagens/deck_placeholder.png';
 
   // Filtrar cards que já estão no campo da IA
   const cardsNoCampoIA = Array.from(document.querySelectorAll('.field-slot img')).map(card => card.id);
@@ -274,678 +284,64 @@ function renderizarMaoIA(maoIA) {
 
   // Renderizar os cards filtrados
   cardsNaMaoIA.forEach((card) => {
-      const cardElement = document.createElement('img');
-      cardElement.src = card.imagem;
-      cardElement.alt = card.nome || 'Card';
-      cardElement.id = card.idCard;
-      cardElement.classList.add('hand-card'); // Classe para estilização
+    const cardWrapper = document.createElement('div');
+    cardWrapper.classList.add('card-wrapper-ia'); // Classe para estilização
 
-      // Define atributos com base no tipo de card
-      if (card.tipo === 'Ninja') {
-          Object.assign(cardElement.dataset, {
-              tipo: card.tipo,
-              idCard: card.idCard,
-              registro: card.registro,
-              nome: card.nome,
-              estagio: card.estagio || 1,
-              hpInicial: card.hp || 0,
-              chakraInicial: card.chakra || 0,
-              hp: card.hp || 0,
-              chakra: card.chakra || 0,
-              taijutsu: card.taijutsu || 0,
-              genjutsu: card.genjutsu || 0,
-              ninjutsu: card.ninjutsu || 0,
-              defesa: card.defesa || 0,
-              velocidade: card.velocidade || 0,
-              chakraFogo: card.chakraFogo || 0,
-              chakraVento: card.chakraVento || 0,
-              chakraRaio: card.chakraRaio || 0,
-              chakraTerra: card.chakraTerra || 0,
-              chakraAgua: card.chakraAgua || 0,
-              // Adiciona os jutsus ao dataset como string JSON 
-              jutsus: JSON.stringify(card.jutsus || [])
-          });
-      } else if (card.tipo === 'Chakra') {
-        cardElement.dataset.tipo = card.tipo;
-        cardElement.dataset.idCard = card.idCard;
-        cardElement.dataset.naturezaChakra = card.naturezaChakra;
-        // Verifica se o efeito está definido e o converte para string
-        cardElement.dataset.efeito = typeof card.efeito === 'string' ? card.efeito : JSON.stringify(card.efeito || '');
-      } else if (card.tipo === 'Tool') {
-          cardElement.dataset.tipo = card.tipo;
-          cardElement.dataset.idCard = card.idCard;
-          cardElement.dataset.nome = card.nome || 'Tool';
-          cardElement.dataset.efeito = typeof card.efeito === 'string' ? card.efeito : JSON.stringify(card.efeito || '');
-      }
-      maoContainerIA.appendChild(cardElement);
+    const cardElement = document.createElement('img');
+    cardElement.src = card.imagem;
+    cardElement.alt = card.nome || 'Card';
+    cardElement.id = card.idCard;
+    cardElement.classList.add('hand-card-ia'); // Classe para estilização
+
+    // Define atributos com base no tipo de card
+    if (card.tipo === 'Ninja') {
+      Object.assign(cardElement.dataset, {
+        tipo: card.tipo,
+        idCard: card.idCard,
+        registro: card.registro,
+        nome: card.nome,
+        estagio: card.estagio || 1,
+        hpInicial: card.hp || 0,
+        chakraInicial: card.chakra || 0,
+        hp: card.hp || 0,
+        chakra: card.chakra || 0,
+        taijutsu: card.taijutsu || 0,
+        genjutsu: card.genjutsu || 0,
+        ninjutsu: card.ninjutsu || 0,
+        defesa: card.defesa || 0,
+        velocidade: card.velocidade || 0,
+        chakraFogo: card.chakraFogo || 0,
+        chakraVento: card.chakraVento || 0,
+        chakraRaio: card.chakraRaio || 0,
+        chakraTerra: card.chakraTerra || 0,
+        chakraAgua: card.chakraAgua || 0,
+        habilidadeSuporte: card.habilidadeSuporte || null,
+        custoHabSup: card.custoHabSup || 0,
+        probabilidade: card.probabilidade || 0,
+        // Adiciona os jutsus ao dataset como string JSON
+        jutsus: JSON.stringify(card.jutsus || [])
+      });
+    } else if (card.tipo === 'Chakra') {
+      cardElement.dataset.tipo = card.tipo;
+      cardElement.dataset.idCard = card.idCard;
+      cardElement.dataset.naturezaChakra = card.naturezaChakra;
+      cardElement.dataset.efeito = typeof card.efeito === 'string' ? card.efeito : JSON.stringify(card.efeito || '');
+    } else if (card.tipo === 'Tool') {
+      cardElement.dataset.tipo = card.tipo;
+      cardElement.dataset.idCard = card.idCard;
+      cardElement.dataset.nome = card.nome || 'Tool';
+      cardElement.dataset.efeito = typeof card.efeito === 'string' ? card.efeito : JSON.stringify(card.efeito || '');
+    }
+
+    const overlay = document.createElement('img');
+    overlay.src = iaDeckImage;
+    overlay.alt = 'Deck';
+    overlay.classList.add('hand-card-overlay');
+
+    cardWrapper.appendChild(cardElement);
+    cardWrapper.appendChild(overlay);
+    maoContainerIA.appendChild(cardWrapper);
   });
-}
-
-/*Inicio DragandDrop*/
-function initializeDragAndDrop() {
-  if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
-    initializeTouchEvents();
-  } else {
-    dragAndDrop();
-  }
-}
-
-function dragAndDrop() {
-  // Seleciona os cards na mão do jogador
-  const cards = document.querySelectorAll('.hand-card, .field-card');
-
-  // Seleciona os slots válidos com base no estado atual
-  const slots = document.querySelectorAll('.field-slot');
-
-  // Configura eventos de drag nos cards
-  cards.forEach(card => {
-    const tipo = card.dataset.tipo;
-    const estagio = parseInt(card.dataset.estagio, 10);
-
-    // Impede que os cards da IA sejam arrastados
-    if (card.closest('#ia-area')) {
-      card.setAttribute('draggable', 'false');
-      card.removeEventListener('dragstart', dragStartHandler);
-      return;
-    }
-
-    // Configuração para o estado "novoLider"
-    if (estadoAtual === "novoLider") {
-      const slotOrigem = card.parentElement;
-
-      // Permite arrastar apenas cards no suporte do J1
-      if (slotOrigem && slotOrigem.id.startsWith("supJ1")) {
-        card.setAttribute('draggable', 'true');
-        card.addEventListener('dragstart', dragStartHandler);
-      } else {
-        card.setAttribute('draggable', 'false');
-        card.removeEventListener('dragstart', dragStartHandler);
-      }
-    }
-    // Configuração para os estados "formacao" ou "preparacao"
-    else if (estadoAtual === "formacao" && (tipo !== "Ninja" || estagio !== 1)) {
-      card.setAttribute('draggable', 'false');
-      card.removeEventListener('dragstart', dragStartHandler);
-    } else {
-      card.setAttribute('draggable', 'true');
-      card.addEventListener('dragstart', dragStartHandler);
-    }
-  });
-
-  // Configura eventos de drag nos slots
-  slots.forEach(slot => {
-    const isLeaderSlot = slot.id === "player-leader-slot";
-
-    // Bloqueia slots da IA
-    if (slot.closest('#ia-area')) {
-      slot.removeEventListener('dragover', dragOverHandler);
-      slot.removeEventListener('drop', handleDrop);
-      return;
-    }
-
-    // Configuração para o estado "premio"
-    if (estadoAtual === "novoLider") {
-      if (isLeaderSlot) {
-        slot.addEventListener('dragover', dragOverHandler);
-        slot.addEventListener('drop', handleDrop);
-      } else {
-        slot.removeEventListener('dragover', dragOverHandler);
-        slot.removeEventListener('drop', handleDrop);
-      }
-    }
-    // Configuração para os estados "formacao" ou "preparacao"
-    else {
-      slot.addEventListener('dragover', dragOverHandler);
-      slot.addEventListener('drop', handleDrop);
-    }
-  });
-}
-function dragStartHandler(e) {
-  const cardId = e.target.id; // ID do card sendo arrastado
-  
-  e.dataTransfer.setData('cardId', cardId);
-  //console.log(`Card arrastado: ${cardId}`);
-}
-function dragOverHandler(e) {
-  e.preventDefault(); // Permite o drop
-}
-function handleDrop(e) {
-  e.preventDefault();
-
-  const cardId = e.dataTransfer.getData('cardId'); // ID do card arrastado
-  const card = document.getElementById(cardId); // Elemento do card arrastado
-  const slotDestino = e.currentTarget; // Slot de destino
-  const slotOrigem = card.parentElement; // Slot de origem do card
-  const cardDestino = slotDestino.querySelector('img'); // Card já no slot de destino, se houver
-
-  //console.log(`Tentando soltar o card: ${cardId} no slot: ${slotDestino.id}`);
-
-  // Chama o processamento com as variáveis
-  processarDrop(card, slotOrigem, cardDestino, slotDestino);
-}
-function initializeTouchEvents() {
-  const cards = document.querySelectorAll('.hand-card, .field-card');
-  const slots = document.querySelectorAll('.field-slot');
-  let cardBeingDragged = null;
-
-  // Configurar eventos touchstart, touchmove e touchend
-  cards.forEach(card => {
-    card.addEventListener('touchstart', (e) => {
-      cardBeingDragged = card;
-      card.classList.add('dragging');
-      // Salva a posição inicial
-      const touch = e.touches[0];
-      card.style.position = 'absolute';
-      card.style.left = `${touch.clientX - card.offsetWidth / 2}px`;
-      card.style.top = `${touch.clientY - card.offsetHeight / 2}px`;
-    });
-
-    card.addEventListener('touchmove', (e) => {
-      e.preventDefault();
-      if (cardBeingDragged) {
-        const touch = e.touches[0];
-        cardBeingDragged.style.left = `${touch.clientX - cardBeingDragged.offsetWidth / 2}px`;
-        cardBeingDragged.style.top = `${touch.clientY - cardBeingDragged.offsetHeight / 2}px`;
-      }
-    });
-
-    card.addEventListener('touchend', (e) => {
-      if (cardBeingDragged) {
-        const touch = e.changedTouches[0];
-        cardBeingDragged.classList.remove('dragging');
-        cardBeingDragged.style.position = 'initial';
-
-        const targetSlot = document.elementFromPoint(touch.clientX, touch.clientY);
-
-        // Verifica se o alvo é um slot válido
-        if (targetSlot && targetSlot.classList.contains('field-slot')) {
-          processarDrop(cardBeingDragged, cardBeingDragged.parentElement, targetSlot.querySelector('img'), targetSlot);
-        }
-
-        cardBeingDragged = null;
-      }
-    });
-  });
-
-  console.log("Touch drag and drop initialized.");
-}
-
-function processarDrop(cardOrigem, slotOrigem, cardDestino, slotDestino) {
-  console.log(`Processando drop: cardOrigem=${cardOrigem.id}, slotOrigem=${slotOrigem.id}, cardDestino=${cardDestino?.id || "null"}, slotDestino=${slotDestino.id}`);
-  // Validação: Slot de origem é igual ao slot de destino
-  if (slotOrigem === slotDestino) {
-    console.log("O card foi solto no mesmo slot de origem. Ação ignorada.");
-    return;
-  }
-  // Validação do estadoAtual
-  if (estadoAtual === "formacao") {
-      // Caso 1: Soltar em slot ocupado a partir da mão
-      if (slotOrigem.id === "maoJ1" && cardDestino) {
-          alert("Você só pode soltar um Ninja Estágio 1 em um slot vazio!");
-          return;
-      }
-      // Caso 2: Soltar de mão em slot vazio
-      if (slotOrigem.id === "maoJ1" && !cardDestino) {
-          //console.log(`Movendo card da mão para slot vazio: ${cardOrigem.id} -> ${slotDestino.id}`);
-          removerCardDaMao(cardOrigem);          
-          moverCard(cardOrigem, slotDestino);
-          return;
-      }
-      // Caso 3: Soltar de campo em slot vazio
-      if (slotOrigem.id !== "maoJ1" && !cardDestino) {
-          console.log(`Movendo card no campo: ${cardOrigem.id} -> ${slotDestino.id}`);
-          moverCard(cardOrigem, slotDestino, slotOrigem);
-          return;
-      }
-      // Caso 4: Soltar de campo em slot ocupado
-      if (slotOrigem.id !== "maoJ1" && cardDestino) {
-          console.log(`Trocando cards: ${cardOrigem.id} <-> ${cardDestino.id}`);
-          trocarCards(cardOrigem, cardDestino, slotOrigem, slotDestino);
-          return;
-      }
-      console.log("Ação inválida para a fase de formação.");
-  } else if (estadoAtual === "preparacao") {
-    const tipo = cardOrigem.dataset.tipo;
-    const cardStage = parseInt(cardOrigem.dataset.estagio, 10); // Estágio do Ninja
-    //console.log(`Chakra já usado antes do If? ${chakraUsado}`);
-    if (tipo === "Chakra" && cardDestino) {
-      //console.log(`Chakra já usado? ${chakraUsado}`);
-      if (chakraUsado) {
-          alert("Você já usou um Chakra neste turno.");
-          return;
-      }
-      aplicarEfeito(cardDestino, cardOrigem);
-      adicionarAoDescarte(cardOrigem);
-      removerCardDaMao(cardOrigem);
-
-      // Marca que o chakra foi usado neste turno
-      chakraUsado = true;
-
-    } else if (tipo === "Tool" && cardDestino) {
-      // Verifica se o Tool já foi usado no ninja
-      if (cardDestino.dataset.toolUsado === "true") {
-        alert("Este ninja já recebeu um Tool neste turno.");
-        return;
-      }
-        aplicarEfeito(cardDestino, cardOrigem);
-        adicionarAoDescarte(cardOrigem);
-        removerCardDaMao(cardOrigem);
-
-      // Marca que o Tool foi usado no ninja neste turno
-      cardDestino.dataset.toolUsado = "true";  
-    } else if (tipo === "Ninja") {
-      // Lógica para Ninja Estágio 1
-      if (cardStage === 1) {
-        // Caso 1: Mão para slot ocupado
-        if (slotOrigem.id === "maoJ1" && cardDestino) {
-          alert("Você só pode soltar um Ninja Estágio 1 em um slot vazio!");
-          return;
-        }
-        // Caso 2: Mão para slot vazio
-        if (slotOrigem.id === "maoJ1" && !cardDestino) {
-          //console.log(`Movendo Ninja Estágio 1 (${cardOrigem.id}) da mão para slot vazio (${slotDestino.id})`);
-          removerCardDaMao(cardOrigem);
-          moverCard(cardOrigem, slotDestino);
-          return;
-        }
-        // Caso 3: Suporte para outro slot vazio
-        if (slotOrigem.id.startsWith("supJ1") && !cardDestino && slotDestino.id !== "player-leader-slot") {
-          console.log(`Movendo Ninja (${cardOrigem.id}) do suporte (${slotOrigem.id}) para slot vazio (${slotDestino.id})`);
-          moverCard(cardOrigem, slotDestino, slotOrigem);
-          return;
-        }
-        // Caso 4: Suporte para líder (slot vazio)
-        if (slotOrigem.id.startsWith("supJ1") && !cardDestino && slotDestino.id === "player-leader-slot") {
-          const confirmar = confirm("Mover este ninja para o slot de líder custará 20 de chakra. Deseja continuar?");
-          if (confirmar) {
-            const chakraAtual = parseInt(cardOrigem.dataset.chakra, 10);
-            if (chakraAtual >= 20) {
-              cardOrigem.dataset.chakra = chakraAtual - 20;
-              console.log(`Reduzindo 20 de chakra do ninja (${cardOrigem.id})`);
-              moverCard(cardOrigem, slotDestino, slotOrigem);
-            } else {
-              alert("O ninja não possui chakra suficiente para esta troca.");
-            }
-          }
-          return;
-        }
-        // Caso 5: Suporte para outro slot ocupado (não líder)
-        if (slotOrigem.id.startsWith("supJ1") && cardDestino && slotDestino.id !== "player-leader-slot") {
-          console.log(`Trocando ninjas entre suporte (${slotOrigem.id}) e slot ocupado (${slotDestino.id})`);
-          trocarCards(cardOrigem, cardDestino, slotOrigem, slotDestino);
-          return;
-        }
-        // Caso 6: Suporte para líder (slot ocupado)
-        if (slotOrigem.id.startsWith("supJ1") && cardDestino && slotDestino.id === "player-leader-slot") {
-          const confirmar = confirm("Trocar este ninja com o líder custará 20 de chakra de cada ninja. Deseja continuar?");
-          if (confirmar) {
-            const chakraOrigem = parseInt(cardOrigem.dataset.chakra, 10);
-            const chakraDestino = parseInt(cardDestino.dataset.chakra, 10);
-              if (chakraOrigem >= 20 && chakraDestino >= 20) {
-                cardOrigem.dataset.chakra = chakraOrigem - 20;
-                cardDestino.dataset.chakra = chakraDestino - 20;
-                console.log(`Reduzindo 20 de chakra de ${cardOrigem.id} e ${cardDestino.id}`);
-                trocarCards(cardOrigem, cardDestino, slotOrigem, slotDestino);
-              } else {
-                alert("Um ou ambos os ninjas não possuem chakra suficiente para esta troca.");
-              }
-          }
-          return;
-        }
-        // Caso 7: Líder para outro slot vazio
-        if (slotOrigem.id === "player-leader-slot" && !cardDestino) {
-          alert("O líder só pode ser trocado por outro ninja. Esta ação é inválida.");
-          return;
-        }
-        // Caso 8: Líder para outro slot ocupado
-        if (slotOrigem.id === "player-leader-slot" && cardDestino) {
-          const confirmar = confirm("Trocar o líder custará 20 de chakra de cada ninja. Deseja continuar?");
-          if (confirmar) {
-            const chakraOrigem = parseInt(cardOrigem.dataset.chakra, 10);
-            const chakraDestino = parseInt(cardDestino.dataset.chakra, 10);
-            if (chakraOrigem >= 20 && chakraDestino >= 20) {
-              cardOrigem.dataset.chakra = chakraOrigem - 20;
-              cardDestino.dataset.chakra = chakraDestino - 20;
-              console.log(`Reduzindo 20 de chakra de ${cardOrigem.id} e ${cardDestino.id}`);
-              trocarCards(cardOrigem, cardDestino, slotOrigem, slotDestino);
-            } else {
-
-              alert("Um ou ambos os ninjas não possuem chakra suficiente para esta troca.");
-            }
-          }
-          return;
-        }
-      }
-      // Lógica para Ninja Estágio 2 ou 3
-      if (cardStage === 2 || cardStage === 3) {
-        // Validação para evolução do Ninja
-        if (slotOrigem.id === "maoJ1") {
-          if (!cardDestino || cardDestino.dataset.tipo !== "Ninja") {
-            alert("Esse ninja só pode evoluir um Ninja no campo, não pode invocar em slot vazio");
-            return;
-          }
-          console.log(`Iniciando validação de evolução para ${cardOrigem.id}`);
-          validarEvolucao(cardOrigem, cardDestino, slotOrigem, slotDestino);
-          return;
-        }
-        // Movimentação ou troca no campo
-        if (slotOrigem.id.startsWith("supJ1") || slotOrigem.id === "player-leader-slot") {
-          // Slot vazio
-          if (!cardDestino) {
-            if (slotDestino.id === "player-leader-slot") {
-              const confirmar = confirm(
-                "Mover este ninja para o slot de líder custará 20 de chakra. Deseja continuar?"
-              );
-              if (confirmar) {
-                const chakraAtual = parseInt(cardOrigem.dataset.chakra, 10);
-                if (chakraAtual >= 20) {
-                  cardOrigem.dataset.chakra = chakraAtual - 20;
-                  console.log(`Reduzindo 20 de chakra do ninja (${cardOrigem.id})`);
-                  moverCard(cardOrigem, slotDestino, slotOrigem);
-                } else {
-                  alert("O ninja não possui chakra suficiente para esta troca.");
-                }
-              }
-            } else {
-              console.log(`Movendo Ninja (${cardOrigem.id}) para slot vazio (${slotDestino.id})`);
-              moverCard(cardOrigem, slotDestino, slotOrigem);
-            }
-            return;
-          }
-          // Slot ocupado
-          if (cardDestino) {
-            if (slotDestino.id === "player-leader-slot") {
-              const confirmar = confirm(
-                "Trocar este ninja com o líder custará 20 de chakra de cada ninja. Deseja continuar?"
-              );
-              if (confirmar) {
-                const chakraOrigem = parseInt(cardOrigem.dataset.chakra, 10);
-                const chakraDestino = parseInt(cardDestino.dataset.chakra, 10);
-                if (chakraOrigem >= 20 && chakraDestino >= 20) {
-                  cardOrigem.dataset.chakra = chakraOrigem - 20;
-                  cardDestino.dataset.chakra = chakraDestino - 20;
-                  console.log(`Reduzindo 20 de chakra de ${cardOrigem.id} e ${cardDestino.id}`);
-                  trocarCards(cardOrigem, cardDestino, slotOrigem, slotDestino);
-                } else {
-                  alert("Um ou ambos os ninjas não possuem chakra suficiente para esta troca.");
-                }
-              }
-            } else {
-              console.log(
-                `Trocando ninjas entre ${cardOrigem.id} e ${cardDestino.id} nos slots ${slotOrigem.id} e ${slotDestino.id}`
-              );
-              trocarCards(cardOrigem, cardDestino, slotOrigem, slotDestino);
-            }
-            return;
-          }
-        }
-      }
-    }
-  } else if (estadoAtual === "novoLider") {
-    if (!slotOrigem.id.startsWith("supJ1") || slotDestino.id !== "player-leader-slot") {
-      alert("Você só pode mover ninjas de suporte para o slot de líder!");
-      return;
-    }
-    /*
-    // Mover ninja para o slot de líder
-    moverCard(cardOrigem, slotDestino, slotOrigem);
-    return;
-    */
-    // Caso 1: Suporte para outro slot vazio
-    if (slotOrigem.id.startsWith("supJ1") && !cardDestino && slotDestino.id !== "player-leader-slot") {
-      console.log(`Movendo Ninja (${cardOrigem.id}) do (${slotOrigem.id}) para slot vazio (${slotDestino.id})`);
-      moverCard(cardOrigem, slotDestino, slotOrigem);
-      return;
-    }
-    // Caso 2: Suporte para líder (slot vazio)
-    if (slotOrigem.id.startsWith("supJ1") && !cardDestino && slotDestino.id === "player-leader-slot") {
-      console.log(`Movendo Ninja (${cardOrigem.id}) do (${slotOrigem.id}) para slot vazio (${slotDestino.id})`);
-      moverCard(cardOrigem, slotDestino, slotOrigem);
-    }
-    // Caso 3: Suporte para outro slot ocupado (não líder)
-    if (slotOrigem.id.startsWith("supJ1") && cardDestino && slotDestino.id !== "player-leader-slot") {
-      console.log(`Trocando ninjas entre (${slotOrigem.id}) e slot ocupado (${slotDestino.id})`);
-      trocarCards(cardOrigem, cardDestino, slotOrigem, slotDestino);
-      return;
-    }
-    // Caso 4: Suporte para líder (slot ocupado)
-    if (slotOrigem.id.startsWith("supJ1") && cardDestino && slotDestino.id === "player-leader-slot") {
-      console.log(`Trocando ninjas entre (${slotOrigem.id}) e slot ocupado (${slotDestino.id})`);
-      trocarCards(cardOrigem, cardDestino, slotOrigem, slotDestino);
-    }
-    // Caso 5: Líder para outro slot vazio
-    if (slotOrigem.id === "player-leader-slot" && !cardDestino) {
-      alert("O líder só pode ser trocado por outro ninja. Esta ação é inválida.");
-      return;
-    }
-    // Caso 6: Líder para outro slot ocupado
-    if (slotOrigem.id === "player-leader-slot" && cardDestino) {
-      console.log(`Trocando ninjas entre (${slotOrigem.id}) e slot ocupado (${slotDestino.id})`);
-      trocarCards(cardOrigem, cardDestino, slotOrigem, slotDestino);
-    }
-  }  
-}
-function moverCard(card, slotDestino, slotOrigem = null) {
-  //console.log("Entrando na função moverCard");
-  if (slotOrigem) {
-      slotOrigem.removeAttribute("data-ocupado"); // Marca o slot de origem como desocupado
-      console.log(`Slot ${slotOrigem.id} desocupado.`);
-  }
-
-  slotDestino.appendChild(card); // Move o card para o slot de destino
-  slotDestino.setAttribute("data-ocupado", "true"); // Marca o slot de destino como ocupado
-  //console.log(`Card ${card.id} movido para slot ${slotDestino.id}`);
-  resetarEstilosCard(card);
-  // Atualizar atributos do líder, se necessário
-  atualizarLiderSeNecessario(slotOrigem, slotDestino);
-}
-function trocarCards(cardOrigem, cardDestino, slotOrigem, slotDestino) {
-  console.log(`Iniciando troca: ${cardOrigem.id} <-> ${cardDestino.id}`);
-
-  // Remove os cards dos slots atuais
-  slotOrigem.removeChild(cardOrigem);
-  slotDestino.removeChild(cardDestino);
-
-  // Move os cards para os slots opostos
-  slotOrigem.appendChild(cardDestino);
-  slotDestino.appendChild(cardOrigem);
-
-  // Atualiza os atributos de ocupação
-  slotOrigem.setAttribute("data-ocupado", "true");
-  slotDestino.setAttribute("data-ocupado", "true");
-
-  console.log(`Troca concluída: ${cardOrigem.id} no ${slotDestino.id}, ${cardDestino.id} no ${slotOrigem.id}`);
-  // Atualizar atributos do líder, se necessário
-  atualizarLiderSeNecessario(slotOrigem, slotDestino);
-}
-/*Fim DragandDrop*/
-/* Atualizar dados */
-function resetarEstilosCard(cardOrigem) {
-  //console.log("iniciando reset de estilo");
-  cardOrigem.style.position = "static"; // Remove posicionamento personalizado
-  cardOrigem.style.margin = "0"; // Remove margens desnecessárias
-  cardOrigem.style.zIndex = "1"; // Reseta nível de empilhamento
-  cardOrigem.style.transform = "none"; // Remove transformações aplicadas durante hover
-  cardOrigem.style.width = "100%"; // Ajusta à largura total do slot
-  cardOrigem.style.height = "100%"; // Ajusta à altura total do slot
-  cardOrigem.style.objectFit = "cover"; // Mantém proporções da imagem dentro do slot
-  cardOrigem.style.transition = "none"; // Remove efeitos de transição
-  cardOrigem.classList.remove("hover-effect", "hand-card"); // Remove classes específicas de hover ou estilo da mão
-  //console.log("reset de estilo finalizado");
-}
-function removerCardDaMao(cardOrigem) {
-  const maoJ1 = document.getElementById("maoJ1");
-  const maoIA = document.getElementById("maoIA");
-
-  console.log(`Tentando remover o card: ${cardOrigem.id} da mão`);
-
-  if (maoJ1.contains(cardOrigem)) {
-      // Remover o card da mão do jogador
-      maoJ1.removeChild(cardOrigem);
-      //console.log(`Card ${cardOrigem.id} removido da mão do jogador.`);
-  } else if (maoIA.contains(cardOrigem)) {
-      // Remover o card da mão da IA
-      maoIA.removeChild(cardOrigem);
-      console.log(`Card ${cardOrigem.id} removido da mão da IA.`);
-  } else {
-      //console.warn(`Card ${cardOrigem.id} não encontrado na mão do jogador ou da IA.`);
-  }
-}
-
-function atualizarAtributosLider(cardElement) {
-  //console.log("Executando atualização de atributos");
-  if (!cardElement || !cardElement.dataset) {
-      console.error("Erro: cardElement inválido ou não encontrado!", cardElement);
-      return;
-  }
-
-  const atributos = {
-      hp: parseInt(cardElement.dataset.hp, 10) || 0,
-      chakra: parseInt(cardElement.dataset.chakra, 10) || 0,
-      taijutsu: parseInt(cardElement.dataset.taijutsu, 10) || 0,      
-      genjutsu: parseInt(cardElement.dataset.genjutsu, 10) || 0,
-      ninjutsu: parseInt(cardElement.dataset.ninjutsu, 10) || 0,
-      defesa: parseInt(cardElement.dataset.defesa, 10) || 0,
-      velocidade: parseInt(cardElement.dataset.velocidade, 10) || 0,
-      chakraFogo: parseInt(cardElement.dataset.chakraFogo || 0, 10),
-      chakraVento: parseInt(cardElement.dataset.chakraVento || 0, 10),
-      chakraRaio: parseInt(cardElement.dataset.chakraRaio || 0, 10),
-      chakraTerra: parseInt(cardElement.dataset.chakraTerra || 0, 10),
-      chakraAgua: parseInt(cardElement.dataset.chakraAgua || 0, 10),
-  };
-
-  document.getElementById("attr-hp").textContent = atributos.hp;
-  document.getElementById("attr-chakra").textContent = atributos.chakra;
-  document.getElementById("attr-taijutsu").textContent = atributos.taijutsu;
-  document.getElementById("attr-genjutsu").textContent = atributos.genjutsu;
-  document.getElementById("attr-ninjutsu").textContent = atributos.ninjutsu;  
-  document.getElementById("attr-defesa").textContent = atributos.defesa;
-  document.getElementById("attr-velocidade").textContent = atributos.velocidade;
-  document.getElementById("attr-chakraFogo").textContent = atributos.chakraFogo;
-  document.getElementById("attr-chakraVento").textContent = atributos.chakraVento;
-  document.getElementById("attr-chakraRaio").textContent = atributos.chakraRaio;
-  document.getElementById("attr-chakraTerra").textContent = atributos.chakraTerra;
-  document.getElementById("attr-chakraAgua").textContent = atributos.chakraAgua;
-
-  const totalElementos =
-    atributos.chakraFogo +
-    atributos.chakraVento +
-    atributos.chakraRaio +
-    atributos.chakraTerra +
-    atributos.chakraAgua;
-
-  document.getElementById("elementosTotal").textContent = totalElementos;
-  //console.log("Atributos Lider J1 atualizados:", atributos);
-  //atualizarDropdownAcoes();
-}
-function atualizarAtributosLiderIA(cardElement) {
-  //console.log("cardElement recebido:", cardElement);
-  if (!cardElement || !cardElement.dataset) {
-    console.error("Erro: cardElement inválido ou não encontrado!", cardElement);
-    return;
-  }
-
-  const atributos = {
-    hp: parseInt(cardElement.dataset.hp, 10) || 0,
-    chakra: parseInt(cardElement.dataset.chakra, 10) || 0,
-    taijutsu: parseInt(cardElement.dataset.taijutsu, 10) || 0,
-    genjutsu: parseInt(cardElement.dataset.genjutsu, 10) || 0,
-    ninjutsu: parseInt(cardElement.dataset.ninjutsu, 10) || 0,
-    defesa: parseInt(cardElement.dataset.defesa, 10) || 0,
-    velocidade: parseInt(cardElement.dataset.velocidade, 10) || 0,
-    chakraFogo: parseInt(cardElement.dataset.chakraFogo || 0, 10),
-    chakraVento: parseInt(cardElement.dataset.chakraVento || 0, 10),
-    chakraRaio: parseInt(cardElement.dataset.chakraRaio || 0, 10),
-    chakraTerra: parseInt(cardElement.dataset.chakraTerra || 0, 10),
-    chakraAgua: parseInt(cardElement.dataset.chakraAgua || 0, 10),
-  };
-
-  document.getElementById("ia-attr-hp").textContent = atributos.hp;
-  document.getElementById("ia-attr-chakra").textContent = atributos.chakra;
-  document.getElementById("ia-attr-taijutsu").textContent = atributos.taijutsu;
-  document.getElementById("ia-attr-genjutsu").textContent = atributos.genjutsu;
-  document.getElementById("ia-attr-ninjutsu").textContent = atributos.ninjutsu;
-  document.getElementById("ia-attr-defesa").textContent = atributos.defesa;
-  document.getElementById("ia-attr-velocidade").textContent = atributos.velocidade;
-  document.getElementById("ia-attr-chakraFogo").textContent = atributos.chakraFogo;
-  document.getElementById("ia-attr-chakraVento").textContent = atributos.chakraVento;
-  document.getElementById("ia-attr-chakraRaio").textContent = atributos.chakraRaio;
-  document.getElementById("ia-attr-chakraTerra").textContent = atributos.chakraTerra;
-  document.getElementById("ia-attr-chakraAgua").textContent = atributos.chakraAgua;
-
-  const totalElementos = atributos.chakraFogo + atributos.chakraVento + atributos.chakraRaio + atributos.chakraTerra + atributos.chakraAgua;
-  document.getElementById("ia-elementosTotal").textContent = totalElementos;
-  //atualizarDropdownAcoesIA();
-
-  console.log("Atributos Lider IA atualizados:", atributos);
-}
-function atualizarLiderSeNecessario(slotOrigem, slotDestino) {
-  // Verifica movimentação envolvendo o líder do jogador
-  if (slotOrigem?.id === "player-leader-slot" || slotDestino?.id === "player-leader-slot") {
-      //console.log("Atualizando atributos do líder do jogador...");
-      const liderJogador = document.querySelector("#player-leader-slot img");
-      if (liderJogador) {
-          atualizarAtributosLider(liderJogador);
-          //atualizarDropdownAcoes(liderJogador);
-      } else {
-          console.log("Nenhum líder no slot do jogador. Zerando atributos...");
-          zerarAtributosLider("#player-leader-slot");
-      }
-  }
-
-  // Verifica movimentação envolvendo o líder da IA
-  if (slotOrigem?.id === "ia-leader-slot" || slotDestino?.id === "ia-leader-slot") {
-      console.log("Atualizando atributos do líder da IA...");
-      const liderIA = document.querySelector("#ia-leader-slot img");
-      if (liderIA) {
-          atualizarAtributosLiderIA(liderIA);
-          //atualizarDropdownAcoesIA(liderIA);
-      } else {
-          console.log("Nenhum líder no slot da IA. Zerando atributos...");
-          zerarAtributosLider("#ia-leader-slot");
-      }
-  }
-}
-function zerarAtributosLider(slotId) {
-  // Determina o prefixo com base no slot
-  const prefix = slotId === "#player-leader-slot" ? "attr" : "ia-attr";
-
-  // Lista dos atributos a serem zerados
-  const atributos = [
-      "hp",
-      "chakra",
-      "taijutsu",
-      "genjutsu",
-      "ninjutsu",
-      "defesa",      
-      "velocidade",
-      "chakraFogo",
-      "chakraVento",
-      "chakraRaio",
-      "chakraTerra",
-      "chakraAgua"
-  ];
-
-  // Itera pelos atributos e zera o valor
-  atributos.forEach(atributo => {
-      const elemento = document.getElementById(`${prefix}-${atributo}`);
-      if (elemento) {
-          elemento.textContent = 0; // Zera o conteúdo do elemento
-      } else {
-          console.warn(`Elemento ${prefix}-${atributo} não encontrado no DOM.`);
-      }
-  });
-
-  console.log(`Atributos do líder no slot ${slotId} foram zerados.`);
-
-  // Zerando o total de elementos
-  if (slotId === "#player-leader-slot") {
-      const elementosTotalElement = document.getElementById('elementosTotal');
-      if (elementosTotalElement) {
-          elementosTotalElement.innerText = 0;
-      }
-      console.log("Campo elementosTotal foi zerado.");
-  }
 }
 function encerrarFormacao() {
   //console.log("Encerrando fase de formação...");
@@ -981,44 +377,6 @@ function encerrarFormacao() {
   alert("O Líder deve ser um Ninja Estágio 1!");
 }
 //-----Turno de Compra
-// Função para incrementar a variável bloqEvo
-function incrementarBloqEvo() {
-  const allCardsInField = document.querySelectorAll('.field-slot img');
-
-  allCardsInField.forEach(card => {
-      let bloqEvo = parseInt(card.dataset.bloqEvo || 0);
-      if (bloqEvo < 3) {
-          bloqEvo += 1;
-      }
-      card.dataset.bloqEvo = bloqEvo; // Atualiza a variável bloqEvo no dataset
-  });
-
-  console.log("bloqEvo atualizado para todos os cards no campo.");
-}
-// Função para adicionar um card na mão e remover do deck
-function comprarCard(deck, mao, deckSlotId) {
-  if (deck.length === 0) return null; // Sem cards no deck
-
-  const card = deck.shift(); // Remove o card do topo do deck
-  const isCardInField = Array.from(document.querySelectorAll('.field-slot img')).some(
-      fieldCard => fieldCard.id === card.idCard
-  );
-
-  if (!isCardInField) {
-      mao.push(card); // Adiciona na mão se o card não estiver no campo
-  } else {
-      console.warn(`Card ${card.idCard} já está no campo, não será adicionado à mão.`);
-  }
-
-  // Atualiza a imagem do deck
-  const deckSlot = document.getElementById(deckSlotId);
-  if (deck.length === 0) {
-      deckSlot.innerHTML = ''; // Remove a imagem se o deck está vazio
-  }
-
-  return card;
-}
-// Turno de compra da IA
 function turnoDeCompraIA() {
   //console.log("Iniciando turno de compra da IA...");
   //estadoAtual="compra";
@@ -1055,7 +413,6 @@ function turnoDeCompraIA() {
       turnoDeCompraJ1();
   }
 }
-// Turno de compra do jogador
 function turnoDeCompraJ1() {
   //console.log("Iniciando turno de compra do jogador...");
 
@@ -1089,6 +446,29 @@ function turnoDeCompraJ1() {
       encerrarTurno();
   }
 }
+// Função para adicionar um card na mão e remover do deck
+function comprarCard(deck, mao, deckSlotId) {
+  if (deck.length === 0) return null; // Sem cards no deck
+
+  const card = deck.shift(); // Remove o card do topo do deck
+  const isCardInField = Array.from(document.querySelectorAll('.field-slot img')).some(
+      fieldCard => fieldCard.id === card.idCard
+  );
+
+  if (!isCardInField) {
+      mao.push(card); // Adiciona na mão se o card não estiver no campo
+  } else {
+      console.warn(`Card ${card.idCard} já está no campo, não será adicionado à mão.`);
+  }
+
+  // Atualiza a imagem do deck
+  const deckSlot = document.getElementById(deckSlotId);
+  if (deck.length === 0) {
+      deckSlot.innerHTML = ''; // Remove a imagem se o deck está vazio
+  }
+
+  return card;
+}
 //-----Preparação
 function turnoDePreparacao() {
   console.log("Iniciando turno de preparação...");
@@ -1097,7 +477,6 @@ function turnoDePreparacao() {
   incrementarBloqEvo(); // Incrementa bloqEvo
   atualizarBotoes(); // Atualiza os botões novamente
   configurarEventosDeDuploClique();//Ativa ver cards da IA
-  //dragAndDrop(); // Ativa os eventos de drag-and-drop para preparação
   initializeDragAndDrop();
 }
 function aplicarEfeito(cardDestino, cardOrigem) {
@@ -1167,76 +546,6 @@ function validarEvolucao(cardOrigem, cardDestino, slotOrigem, slotDestino) {
     return;
   } 
 }
-function adicionarAoDescarte(card) {
-  // Identifica se o card pertence ao jogador ou à IA
-  const isIA = card.closest('#maoIA') || card.closest('#ia-leader-slot') || card.closest('#ia-supports');
-    // Remove estilos ou classes extras do card para manter consistência no descarte
-    card.classList.remove('field-card','hand-card');
-    card.draggable = false; // Impede arrastar o card após ser descartado
-
-  if (isIA) {
-      console.log(`Adicionando card (${card.id}) ao descarte da IA.`);
-      document.querySelector('#ia-discard-slot').appendChild(card);
-      arrayDescarteIA.push(card.id); // Adiciona o ID ao array da IA
-  } else {
-      console.log(`Adicionando card (${card.id}) ao descarte do Jogador.`);
-      document.querySelector('#player-discard-slot').appendChild(card);
-      arrayDescartePlayer.push(card.id); // Adiciona o ID ao array do Jogador
-  }
-}
-function reduzirChakra(card, quantidade) {
-  card.dataset.chakra = Math.max(0, parseInt(card.dataset.chakra, 10) - quantidade);
-  atualizarAtributos(card); // Atualiza os atributos visuais
-}
-function evoluirNinja(cardDestino, cardOrigem) {
-  console.log(`Iniciando evolução do ninja: ${cardDestino.id} para ${cardOrigem.id}`);
-
-  // Calcula o dano sofrido
-  const hpInicial = parseInt(cardDestino.dataset.hpInicial, 10) || 0;
-  const hpAtual = parseInt(cardDestino.dataset.hp, 10) || 0;
-  const danoSofrido = hpInicial - hpAtual;
-
-  // Calcula o chakra gasto
-  const chakraInicial = parseInt(cardDestino.dataset.chakraInicial, 10) || 0;
-  const chakraAtual = parseInt(cardDestino.dataset.chakra, 10) || 0;
-  const chakraGasto = chakraInicial - chakraAtual;
-
-  // Atualiza os valores do card de evolução
-  cardOrigem.dataset.hp = (parseInt(cardOrigem.dataset.hpInicial, 10) || 0) - danoSofrido;
-  cardOrigem.dataset.chakra = (parseInt(cardOrigem.dataset.chakraInicial, 10) || 0) - chakraGasto;
-  cardOrigem.dataset.chakraFogo = cardDestino.dataset.chakraFogo;
-  cardOrigem.dataset.chakraVento = cardDestino.dataset.chakraVento;
-  cardOrigem.dataset.chakraRaio = cardDestino.dataset.chakraRaio;
-  cardOrigem.dataset.chakraTerra = cardDestino.dataset.chakraTerra;
-  cardOrigem.dataset.chakraAgua = cardDestino.dataset.chakraAgua;
-
-  console.log(
-      `Evolução concluída: HP final=${cardOrigem.dataset.hp}, Chakra final=${cardOrigem.dataset.chakra}, Elementos mantidos.`
-  );
-
-  // Confere se o slotDestino ainda é válido
-  const slotDestino = cardDestino.parentElement;
-  if (!slotDestino) {
-      console.error("Slot de destino não encontrado. Evolução abortada.");
-      return;
-  }
-
-  // Aloca o card de evolução no mesmo slot antes de remover o estágio anterior
-  slotDestino.appendChild(cardOrigem);
-  console.log(`Card ${cardOrigem.id} alocado no slot ${slotDestino.id}`);
-  resetarEstilosCard(cardOrigem);
-
-  // Remove o estágio anterior (cardDestino) para a pilha de descarte
-  adicionarAoDescarte(cardDestino);
-  console.log(`Card ${cardDestino.id} adicionado ao descarte.`);
-
-  // Atualizar atributos se o slot for do líder
-  if (slotDestino.id === "player-leader-slot") {
-      atualizarAtributosLider(cardOrigem);
-  } else if (slotDestino.id === "ia-leader-slot") {
-      atualizarAtributosLiderIA(cardOrigem);
-  }
-}
 function encerrarPreparacao() {
   if (estadoAtual !== "preparacaoIA") {
       alert("Você só pode encerrar o turno durante a preparação!");
@@ -1249,29 +558,13 @@ function encerrarPreparacao() {
   ninjasNoCampo.forEach(ninja => {
       ninja.dataset.toolUsado = "false";
   });
-  //console.log("Turno de preparação encerrado. Iniciando combate...");
-  estadoAtual = "combate";
 
-  // Iniciar combate
-  iniciarTurnoCombate();
+  estadoAtual = "suporte";
+  decidirOrdemHabilidadesSuporte();
 }
 // Função para atualizar os botões com base no estado atual
 function atualizarBotoes() {
-  // Lista de todos os botões
-  const botoes = document.querySelectorAll(".turno-botao");
-
-  // Itera sobre os botões e atualiza as classes com base no estado
-  botoes.forEach((botao) => {
-    const idBotao = botao.id.replace("btn-", ""); // Obtém o nome do botão a partir do ID
-
-    if (idBotao === estadoAtual) {
-      botao.classList.add("ativo"); // Destaca o botão ativo
-      botao.classList.remove("opaco"); // Remove a opacidade
-    } else {
-      botao.classList.remove("ativo"); // Remove o destaque
-      botao.classList.add("opaco"); // Aplica opacidade
-    }
-  });
+  document.getElementById("fase-atual").innerText = traduzirFase(estadoAtual);
 }
 // Exemplo de função para encerrar o turno atual e ir para o próximo
 function encerrarTurno() {
@@ -1290,6 +583,17 @@ function encerrarTurno() {
   } else if (estadoAtual === "preparacaoIA") {
     console.log("Turno de preparação IA encerrado!");
     encerrarPreparacao(); // Função específica para encerrar a preparação
+  } else if (estadoAtual === "suporte") {
+    console.log("Encerrando Suporte");
+    if (!suporteIAExecutado) {
+      console.log("IA ainda não executou as habilidades de suporte. Iniciando...");
+      escolherHabilidadesSuporteIA();
+      encerrarTurno();
+    } else {
+      console.log("IA já executou as habilidades de suporte. Avançando para a fase de combate...");
+      estadoAtual = "combate";
+      iniciarTurnoCombate();
+    }
   } else if (estadoAtual === "combate") {
     console.log("Iniciando dano de combate");
     encerrarCombate(); // Função específica para calcular dano
@@ -1298,7 +602,21 @@ function encerrarTurno() {
     estadoAtual = "premio"; // Transição para a fase de prêmio
     encerrarTurno(); // Função específica para encerrar combate
   } else if (estadoAtual === "premio" || estadoAtual === "liderAusente") {
-    console.log("Turno de prêmio encerrado!");
+    console.log("Turno de prêmio encerrado!");    
+    // Reseta a marcação de habilidade usada e limpa a marcação de paralyze para todos os ninjas no campo
+    const todosNinjasCampo = document.querySelectorAll(".field-slot img");
+    todosNinjasCampo.forEach(ninja => {
+        if (ninja.dataset.habUsada === "true") {
+            ninja.dataset.habUsada = "false";
+            console.log(`Resetando habilidade usada para o ninja ${ninja.dataset.nome}.`);
+        }
+        if (ninja.dataset.paralyze === "true") {
+            ninja.dataset.paralyze = "false";
+            console.log(`Removendo Paralyze do ninja ${ninja.dataset.nome}.`);
+            ninja.dataset.velocidade = ninja.dataset.velocidadeOriginal || ninja.dataset.velocidade; // Restaura a velocidade original, se aplicável
+        }
+    });
+
     estadoAtual = "compra";
     turnoDeCompraIA(); // Avança para o próximo estágio
   } else if (estadoAtual === "fim") {
@@ -1308,6 +626,7 @@ function encerrarTurno() {
 
   // Atualiza os botões após a mudança de estado
   atualizarBotoes();
+
 }
 // Função de clique para os botões
 function handleClick(novoEstado) {
@@ -1342,8 +661,82 @@ function handleClick(novoEstado) {
   // Troca para o estado clicado
   trocarEstado(novoEstado);
 }
+// Controle de Fases
+//document.getElementById("fase-atual").innerText = traduzirFase(estadoAtual);
+
+// Manipular o botão de desistência
+document.getElementById("btn-desistir").addEventListener("click", () => {
+  const confirmar = confirm("Você tem certeza que deseja desistir? A IA será declarada vencedora.");
+  if (confirmar) {
+    declararVitoriaIA();
+  }
+});
+
+// Manipular o botão de próxima fase
+document.getElementById("btn-proxima-fase").addEventListener("click", () => {
+  const confirmar = confirm(`Deseja encerrar a fase "${traduzirFase(estadoAtual)}" e avançar para a próxima?`);
+  if (confirmar) {
+    encerrarTurno();
+  }
+});
+
+// Função para traduzir o nome da fase
+function traduzirFase(fase) {
+  const traducoes = {
+    inicio: "Formando a Vila",
+    formacao: "Formação do Time",
+    compra: "Invocando Recurso",
+    preparacao: "Equipando Time",
+    suporte: "Hab. de Suporte",
+    combate: "Ações de Combate",
+    novoLider: "Escolher Novo Líder"
+  };
+  return traducoes[fase] || fase;
+}
+// Função para encerrar o jogo
+function encerrarJogo() {
+  estadoAtual = "encerrado";
+  document.getElementById("fase-atual").innerText = "Jogo Encerrado";
+  alert("Obrigado por jogar!");
+  // Adicione lógica para encerrar o jogo (desativar botões, etc.)
+  return;
+}
+//----Encerrar
 function iniciarTurnoCombate() {
   console.log("Iniciando turno de combate...");
+  atualizarBotoes();
+
+  // Reduz HP dos ninjas com a marcação de Poising
+  const todosNinjas = document.querySelectorAll(".field-slot img");
+  todosNinjas.forEach(ninja => {
+    if (ninja.dataset.poising === "true") {
+        const hpAtual = parseInt(ninja.dataset.hp, 10);
+        const hpInicial = parseInt(ninja.dataset.hpInicial, 10);
+
+        if (hpAtual > 0) {
+            const reducao = Math.ceil(hpInicial * 0.1); // 10% do HP inicial
+            ninja.dataset.hp = Math.max(0, hpAtual - reducao); // Garante que o HP não fique negativo
+            console.log(`Ninja ${ninja.dataset.nome} com Poising: HP reduzido em ${reducao}. HP atual: ${ninja.dataset.hp}`);
+
+            // Atualiza atributos se o ninja for o líder
+            if (ninja.closest("#player-leader-slot")) {
+                console.log(`Atualizando atributos do líder do jogador devido ao Poising.`);
+                atualizarAtributosLider(ninja);
+            } else if (ninja.closest("#ia-leader-slot")) {
+                console.log(`Atualizando atributos do líder da IA devido ao Poising.`);
+                atualizarAtributosLiderIA(ninja);
+            }
+
+            // Remove o ninja do campo se ele foi derrotado
+            if (parseInt(ninja.dataset.hp, 10) === 0) {
+                console.log(`Ninja ${ninja.dataset.nome} foi derrotado devido ao efeito de Poising.`);
+                adicionarAoDescarte(ninja); // Função para remover o ninja do campo
+            }
+        }
+    }
+  });
+
+
   const liderJogador = document.querySelector("#player-leader-slot img");
   const liderIA = document.querySelector("#ia-leader-slot img");
 
@@ -1354,36 +747,32 @@ function iniciarTurnoCombate() {
       console.log("Ambos os slots de líder estão vazios.");
       turnosSemLider++;
       if (turnosSemLider >= 3) {
-        acordoPaz();
+          acordoPaz();
       } else {
-        encerrarTurno();
+          encerrarTurno();
       }
       return;
   }
 
   if (liderJogador && !liderIA) {
-    console.log("Jogador possui um líder, IA não.");
-    turnosSemLider = 0; // Reseta o contador
-    resgatePremioJ1();
-    //encerrarTurno();
-    return;
+      console.log("Jogador possui um líder, IA não.");
+      turnosSemLider = 0; // Reseta o contador
+      resgatePremioJ1();
+      return;
   }
 
   if (liderIA && !liderJogador) {
-    console.log("IA possui um líder, Jogador não.");
-    turnosSemLider = 0; // Reseta o contador
-    resgatePremioIA();
-    //encerrarTurno();
-    return;
+      console.log("IA possui um líder, Jogador não.");
+      turnosSemLider = 0; // Reseta o contador
+      resgatePremioIA();
+      return;
   }
 
   if (liderJogador && liderIA) {
-    console.log("Ambos os líderes estão presentes.");
-    turnosSemLider = 0; // Reseta o contador
-    habilitarDropdownsAcoes();
-    atualizarDropdownAcoes();
-    atualizarDropdownAcoesIA();
-    //configurarBotaoEncerrarTurno();
+      console.log("Ambos os líderes estão presentes.");
+      turnosSemLider = 0; // Reseta o contador
+      atualizarDropdownAcoes();
+      atualizarDropdownAcoesIA();
   }
 }
 function resgatePremioJ1() {
@@ -1411,14 +800,6 @@ function declararVitoriaJ1() {
   alert("Jogador 1 venceu!");
   // Encerrar o jogo
   encerrarJogo();
-}
-
-function encerrarJogo() {
-  console.log("Encerrando o jogo...");
-  // Adicione a lógica para encerrar o jogo, como redirecionar para uma página de vitória ou reiniciar o jogo.
-  estadoAtual = "fim";
-  encerrarTurno();
-  return;
 }
 function resgatePremioIA() {
   console.log("Resgatando prêmio para a IA...");
@@ -1458,11 +839,6 @@ function acordoPaz() {
   console.log("Acordo de paz chamado.");
   // Lógica para acordo de paz
 }
-function habilitarDropdownsAcoes() {
-  console.log("Habilitando seleção de ações...");
-  const actionDropdowns = document.getElementById("action-dropdowns");
-  actionDropdowns.style.display = "block"; // Mostra os dropdowns para o jogador
-}
 function atualizarDropdownAcoes() {
   // Obter o ninja líder atual do slot de líder do jogador
   const liderAtual = document.querySelector("#player-leader-slot img");
@@ -1491,7 +867,6 @@ function atualizarDropdownAcoes() {
   const opcoesBasicas = [
     { value: "taijutsu", text: `Ataque Simples (${taijutsu})` },
     { value: "defesa", text: `Proteger-se (${defesa})` },
-    //{ value: "genjutsu", text: `Genjutsu (${genjutsu})` },
     { value: "velocidade", text: `Desviar (${velocidade})` }
   ];
 
@@ -1634,7 +1009,6 @@ function validarRequisitosChakra(requisitoChakra, atributos) {
   }
   return true;
 }
-
 function validarEscolhaAcoes(elementoDropdown, lider) {
   const opcaoSelecionada = elementoDropdown.value;
   console.log(`Validando ação: ${opcaoSelecionada} para o líder: ${lider.alt}`);
@@ -1688,7 +1062,6 @@ function validarEscolhaAcoes(elementoDropdown, lider) {
 
   return true;
 }
-
 //------Encerrar escolha das ações
 //------Inicio Modal Descarte
 function openModal(discardPile, title) {
@@ -1728,7 +1101,6 @@ if (closeDiscardModalButton) {
     console.error("Botão de fechar do modal de descarte não encontrado.");
 }
 
-//document.getElementById("closeDiscardModal").addEventListener("click", closeModal);
 document.getElementById("prevCard").addEventListener("click", () => {
     currentCardIndex = (currentCardIndex > 0) ? currentCardIndex - 1 : currentDiscardPile.length - 1;
     showCard(currentCardIndex);
@@ -1799,7 +1171,7 @@ function debugEstadoJogo() {
   const liderAtualIA = document.querySelector("#ia-leader-slot img");
   const liderAtualJ1 = document.querySelector("#player-leader-slot img");
 
-  console.log("Estado do Jogo:");
+  console.log("Estado do Jogo:", estadoAtual);
   console.log("Líder IA:", liderAtualIA ? liderAtualIA.dataset.nome : "Não encontrado");
   console.log("Líder Jogador:", liderAtualJ1 ? liderAtualJ1.dataset.nome : "Não encontrado");
   console.log("Ações IA:", {
@@ -1810,6 +1182,8 @@ function debugEstadoJogo() {
       ofensiva: document.getElementById("j1-offensive-action")?.value,
       defensiva: document.getElementById("j1-defensive-action")?.value,
   });
+  console.log("IA usou Hab. de Sup. nesse turno?", suporteIAExecutado);
+  console.log("Qtde de hab. sup. usada no turno:", habilidadesUsadas);
 }
 
 function voltarConfigJogo() {
@@ -1819,6 +1193,38 @@ function voltarConfigJogo() {
 const jogadorNome = localStorage.getItem('jogadorNome');
 const jogadorBaralho = JSON.parse(localStorage.getItem('jogadorBaralho'));
 const iaBaralho = JSON.parse(localStorage.getItem('iaBaralho'));
+
+// Carrega as imagens dos decks do localStorage
+const jogadorDeckImage = localStorage.getItem('jogadorDeckImage');
+const iaDeckImage = localStorage.getItem('iaDeckImage');
+
+// Aplica a imagem do deck da IA aos cards da mão da IA
+if (iaDeckImage) {
+  const handCardsIA = document.querySelectorAll('.hand-card-ia');
+  handCardsIA.forEach(card => {
+    card.style.backgroundImage = `url('${iaDeckImage}')`;
+    card.style.backgroundSize = 'cover';
+    card.style.backgroundPosition = 'center';
+    card.style.backgroundRepeat = 'no-repeat';
+  });
+}
+
+// Seleciona os elementos de imagem das miniaturas dos decks
+const jogadorDeckImgElement = document.getElementById('player-deck-img');
+const iaDeckImgElement = document.getElementById('ia-deck-img');
+
+// Atualiza as imagens das miniaturas dos decks
+if (jogadorDeckImage && jogadorDeckImgElement) {
+  jogadorDeckImgElement.src = jogadorDeckImage;
+} else {
+  console.warn('Imagem do deck do jogador não encontrada. Exibindo imagem padrão.');
+}
+
+if (iaDeckImage && iaDeckImgElement) {
+  iaDeckImgElement.src = iaDeckImage;
+} else {
+  console.warn('Imagem do deck da IA não encontrada. Exibindo imagem padrão.');
+}
 
 // Exibir o nome do jogador e preparar o campo de batalha
 window.onload = function () {
@@ -1832,6 +1238,4 @@ window.onload = function () {
 
   // Chame essa função sempre que precisar reconfigurar os eventos
   configurarEventosDeDuploClique();
-
 };
-  
